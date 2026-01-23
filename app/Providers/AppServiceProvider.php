@@ -23,5 +23,11 @@ class AppServiceProvider extends ServiceProvider
         if ($this->app->environment('production')) {
             \Illuminate\Support\Facades\URL::forceScheme('https');
         }
+
+        // Register event listeners
+        \Illuminate\Support\Facades\Event::listen(
+            \Illuminate\Auth\Events\Verified::class,
+            \App\Listeners\SendWelcomeEmail::class
+        );
     }
 }
