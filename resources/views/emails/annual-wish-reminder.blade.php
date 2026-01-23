@@ -188,7 +188,9 @@
             
             <p style="margin-top: 20px; font-size: 12px;">
                 This email was sent because you have an account with Dav/Devs Three Wishes.<br>
-                If you no longer wish to receive these annual reminders, you can update your preferences in your account settings.
+                If you no longer wish to receive these annual reminders, you can update your preferences in your account settings.<br>
+                <a href="{{ config('app.url') }}/privacy" style="color: #6366f1; text-decoration: underline;">Privacy Policy</a> | 
+                <a href="{{ config('app.url') }}/terms" style="color: #6366f1; text-decoration: underline;">Terms & Conditions</a>
             </p>
         </div>
     </div>

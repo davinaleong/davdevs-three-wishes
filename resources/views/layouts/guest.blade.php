@@ -25,6 +25,26 @@
             <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white dark:bg-gray-800 shadow-md overflow-hidden sm:rounded-lg">
                 {{ $slot }}
             </div>
+            
+            <!-- Footer Links -->
+            <div class="mt-8 text-center">
+                <div class="flex justify-center space-x-4">
+                    <a href="{{ route('legal.terms') }}" class="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors">
+                        Terms
+                    </a>
+                    <span class="text-xs text-gray-400">•</span>
+                    <a href="{{ route('legal.privacy') }}" class="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors">
+                        Privacy
+                    </a>
+                    <span class="text-xs text-gray-400">•</span>
+                    <a href="mailto:support@gracesoft.dev" class="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors">
+                        Contact
+                    </a>
+                </div>
+                <p class="text-xs text-gray-400 dark:text-gray-500 mt-2">
+                    &copy; {{ date('Y') }} {{ config('app.name') }}
+                </p>
+            </div>
         </div>
     </body>
 </html>

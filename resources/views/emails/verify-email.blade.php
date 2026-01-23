@@ -163,7 +163,9 @@
             
             <p style="margin-top: 20px; font-size: 12px;">
                 You received this email because you created a Dav/Devs Three Wishes account.<br>
-                If you didn't create an account, no further action is required.
+                If you didn't create an account, no further action is required.<br>
+                <a href="{{ config('app.url') }}/privacy" style="color: #6366f1; text-decoration: underline;">Privacy Policy</a> | 
+                <a href="{{ config('app.url') }}/terms" style="color: #6366f1; text-decoration: underline;">Terms & Conditions</a>
             </p>
         </div>
     </div>

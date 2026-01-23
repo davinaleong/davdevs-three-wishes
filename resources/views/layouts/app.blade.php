@@ -31,6 +31,29 @@
             <main>
                 {{ $slot }}
             </main>
+            
+            <!-- Footer -->
+            <footer class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-12">
+                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                    <div class="flex flex-col md:flex-row justify-between items-center">
+                        <div class="text-sm text-gray-600 dark:text-gray-400 mb-4 md:mb-0">
+                            <p>&copy; {{ date('Y') }} {{ config('app.name') }}. All rights reserved.</p>
+                            <p class="text-xs mt-1">"Trust in the Lord with all your heart" - Proverbs 3:5</p>
+                        </div>
+                        <div class="flex space-x-6">
+                            <a href="{{ route('legal.terms') }}" class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors">
+                                Terms & Conditions
+                            </a>
+                            <a href="{{ route('legal.privacy') }}" class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors">
+                                Privacy Policy
+                            </a>
+                            <a href="mailto:support@gracesoft.dev" class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors">
+                                Contact Us
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </footer>
         </div>
     </body>
 </html>

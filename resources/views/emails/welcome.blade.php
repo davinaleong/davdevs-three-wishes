@@ -191,7 +191,9 @@
             
             <p style="margin-top: 20px; font-size: 12px;">
                 You received this email because you just verified your Dav/Devs Three Wishes account.<br>
-                To manage your email preferences, visit your account settings.
+                To manage your email preferences, visit your account settings.<br>
+                <a href="{{ config('app.url') }}/privacy" style="color: #6366f1; text-decoration: underline;">Privacy Policy</a> | 
+                <a href="{{ config('app.url') }}/terms" style="color: #6366f1; text-decoration: underline;">Terms & Conditions</a>
             </p>
         </div>
     </div>
