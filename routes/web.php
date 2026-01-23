@@ -1,15 +1,26 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\WishController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    $themeService = app(\App\Services\ThemeService::class);
+    $activeTheme = $themeService->getActiveTheme();
+    $themeCssVariables = $themeService->getCssVariables($activeTheme);
+    
+    return view('welcome', compact('activeTheme', 'themeCssVariables'));
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return redirect()->route('wishes.index');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+// Wish routes - protected by auth and verified middleware
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::resource('wishes', WishController::class);
+    Route::patch('/wishes/reorder', [WishController::class, 'reorder'])->name('wishes.reorder');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
