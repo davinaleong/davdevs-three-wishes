@@ -1,0 +1,31 @@
+# Heroku Environment Variables
+# Run these commands in your terminal after creating the Heroku app
+
+# Basic Laravel configuration
+heroku config:set APP_NAME="Three Wishes" --app davdevs-three-wishes
+heroku config:set APP_ENV=production --app davdevs-three-wishes
+heroku config:set APP_DEBUG=false --app davdevs-three-wishes
+heroku config:set APP_URL=https://davdevs-three-wishes.herokuapp.com --app davdevs-three-wishes
+
+# Generate a new application key (run this locally first)
+# php artisan key:generate --show
+# Then set it: heroku config:set APP_KEY=base64:YOUR_GENERATED_KEY --app davdevs-three-wishes
+
+# Database will be auto-configured by Heroku PostgreSQL addon
+
+# Mail configuration (you'll need to update these with your mail service)
+heroku config:set MAIL_MAILER=smtp --app davdevs-three-wishes
+heroku config:set MAIL_HOST=smtp.mailtrap.io --app davdevs-three-wishes
+heroku config:set MAIL_PORT=2525 --app davdevs-three-wishes
+heroku config:set MAIL_USERNAME=your_mailtrap_username --app davdevs-three-wishes
+heroku config:set MAIL_PASSWORD=your_mailtrap_password --app davdevs-three-wishes
+heroku config:set MAIL_ENCRYPTION=tls --app davdevs-three-wishes
+heroku config:set MAIL_FROM_ADDRESS=noreply@davdevs-three-wishes.herokuapp.com --app davdevs-three-wishes
+heroku config:set MAIL_FROM_NAME="Three Wishes" --app davdevs-three-wishes
+
+# Session and cache
+heroku config:set SESSION_DRIVER=database --app davdevs-three-wishes
+heroku config:set CACHE_STORE=database --app davdevs-three-wishes
+
+# Optional: Timezone
+heroku config:set APP_TIMEZONE="Asia/Singapore" --app davdevs-three-wishes
