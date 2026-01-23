@@ -27,6 +27,13 @@ return Application::configure(basePath: dirname(__DIR__))
                  ->onOneServer()
                  ->runInBackground();
     })
+    ->withEvents(function (): void {
+        // Send welcome email when user verifies their email
+        \Illuminate\Support\Facades\Event::listen(
+            \Illuminate\Auth\Events\Verified::class,
+            \App\Listeners\SendWelcomeEmail::class
+        );
+    })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
     })->create();
