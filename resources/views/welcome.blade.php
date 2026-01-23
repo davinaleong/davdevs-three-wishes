@@ -54,20 +54,20 @@
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 @auth
                     <a href="{{ route('wishes.index') }}" 
-                       class="inline-block px-8 py-3 rounded-lg font-semibold text-white transition duration-200 shadow-md hover:shadow-lg"
+                       class="inline-flex items-center justify-center gap-2 px-8 py-3 rounded-lg font-semibold text-white transition duration-200 shadow-md hover:shadow-lg"
                        style="background-color: var(--color-primary, #6366f1);">
                         View Your Wishes
                     </a>
                 @else
                     <a href="{{ route('login') }}" 
-                       class="inline-block px-8 py-3 rounded-lg border-2 font-semibold transition duration-200"
+                       class="inline-flex items-center justify-center gap-2 px-8 py-3 rounded-lg border-2 font-semibold transition duration-200"
                        style="border-color: var(--color-primary, #6366f1); color: var(--color-primary, #6366f1);">
                         Log In
                     </a>
                     
                     @if (Route::has('register'))
                         <a href="{{ route('register') }}" 
-                           class="inline-block px-8 py-3 rounded-lg font-semibold text-white transition duration-200 shadow-md hover:shadow-lg"
+                           class="inline-flex items-center justify-center gap-2 px-8 py-3 rounded-lg font-semibold text-white transition duration-200 shadow-md hover:shadow-lg"
                            style="background-color: var(--color-primary, #6366f1);">
                             Get Started
                         </a>
