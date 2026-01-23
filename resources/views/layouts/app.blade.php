@@ -40,16 +40,16 @@
                             <p>&copy; {{ date('Y') }} {{ config('app.name') }}. All rights reserved.</p>
                             <p class="text-xs mt-1">"Trust in the Lord with all your heart" - Proverbs 3:5</p>
                         </div>
-                        <div class="flex space-x-6">
+                        <div class="flex gap-2 space-x-6">
                             <a href="{{ route('legal.terms') }}" class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors">
                                 Terms & Conditions
                             </a>
                             <a href="{{ route('legal.privacy') }}" class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors">
                                 Privacy Policy
-                            </a>
+                            {{-- </a>
                             <a href="mailto:support@gracesoft.dev" class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors">
                                 Contact Us
-                            </a>
+                            </a> --}}
                         </div>
                     </div>
                 </div>
