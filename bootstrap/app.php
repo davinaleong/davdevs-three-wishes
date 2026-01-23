@@ -12,6 +12,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        // Trust all proxies for Heroku HTTPS detection
+        $middleware->trustProxies(at: '*');
+        
         $middleware->web(append: [
             \App\Http\Middleware\ShareActiveTheme::class,
         ]);
