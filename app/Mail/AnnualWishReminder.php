@@ -37,7 +37,7 @@ class AnnualWishReminder extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: "Your {$this->year} Three Wishes - God's Faithfulness & New Hopes!",
+            subject: "Your {$this->year} Dav/Devs Three Wishes - God's Faithfulness & New Hopes!",
         );
     }
 
