@@ -16,7 +16,6 @@ class WishController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('verified');
     }
 
     /**
@@ -25,6 +24,13 @@ class WishController extends Controller
     public function index()
     {
         $user = Auth::user();
+        
+        // Check if user needs to verify email
+        if (!$user->hasVerifiedEmail()) {
+            return redirect()->route('verification.notice')
+                ->with('message', 'Please verify your email address to start creating wishes.');
+        }
+        
         $activeTheme = ThemeService::getActiveTheme() ?: ThemeService::getCurrentYearTheme();
         
         $wishes = $user->wishesForTheme($activeTheme)->get();
@@ -39,6 +45,14 @@ class WishController extends Controller
      */
     public function create()
     {
+        $user = Auth::user();
+        
+        // Check if user needs to verify email
+        if (!$user->hasVerifiedEmail()) {
+            return redirect()->route('verification.notice')
+                ->with('message', 'Please verify your email address to start creating wishes.');
+        }
+        
         $activeTheme = ThemeService::getActiveTheme() ?: ThemeService::getCurrentYearTheme();
         
         if (!WishEditWindow::isOpen($activeTheme)) {

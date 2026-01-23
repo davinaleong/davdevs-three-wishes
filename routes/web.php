@@ -14,7 +14,7 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
     return redirect()->route('wishes.index');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth'])->name('dashboard');
 
 Route::get('/test', function () {
     try {
@@ -44,3 +44,8 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+// Include development email testing routes
+if (app()->environment('local')) {
+    require __DIR__.'/dev-email.php';
+}
