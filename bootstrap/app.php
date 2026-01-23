@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Console\Scheduling\Schedule;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -14,6 +15,14 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web(append: [
             \App\Http\Middleware\ShareActiveTheme::class,
         ]);
+    })
+    ->withSchedule(function (Schedule $schedule): void {
+        // Check daily if it's December 31st and send annual wish emails
+        $schedule->command('wishes:send-annual-emails-if-december-31st')
+                 ->dailyAt('10:00')
+                 ->timezone('UTC')
+                 ->onOneServer()
+                 ->runInBackground();
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
