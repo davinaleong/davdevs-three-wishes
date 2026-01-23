@@ -10,7 +10,7 @@
                 </p>
             </div>
             @if($canEdit && $wishes->count() < 10)
-                <a href="{{ route('wishes.create') }}" class="bg-purple-500 text-white font-bold py-2 px-4 rounded">
+                <a href="{{ route('wishes.create') }}" class="inline-flex items-center px-4 py-2 bg-indigo-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-600 focus:bg-indigo-600 active:bg-indigo-700 transition ease-in-out duration-150">
                     Add New Wish
                 </a>
             @endif
@@ -56,7 +56,7 @@
                                 @endif
                             </p>
                             @if($canEdit && $wishes->count() < 10)
-                                <a href="{{ route('wishes.create') }}" class="inline-block mt-3 bg-indigo-500 text-white font-bold py-2 px-4 rounded text-sm">
+                                <a href="{{ route('wishes.create') }}" class="inline-flex items-center mt-3 px-4 py-2 bg-indigo-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-600 focus:bg-indigo-600 active:bg-indigo-700 transition ease-in-out duration-150">
                                     Add New Wish
                                 </a>
                             @endif
@@ -64,7 +64,7 @@
                         <div class="flex space-x-2">
                             @for($i = 1; $i <= 10; $i++)
                                 @if($wishes->where('position', $i)->first())
-                                    <div class="w-4 h-4 bg-blue-500 rounded" title="Wish {{ $i }}"></div>
+                                    <div class="w-4 h-4 bg-indigo-500 rounded" title="Wish {{ $i }}"></div>
                                 @else
                                     <div class="w-4 h-4 bg-gray-300 dark:bg-gray-600 rounded" title="Empty slot {{ $i }}"></div>
                                 @endif
@@ -93,17 +93,11 @@
                                         <p class="text-gray-900 dark:text-gray-100 text-lg">
                                             {{ $wish->content }}
                                         </p>
-                                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">
-                                            Created: {{ $wish->created_at->format('M j, Y g:i A') }}
-                                            @if($wish->updated_at != $wish->created_at)
-                                                • Updated: {{ $wish->updated_at->format('M j, Y g:i A') }}
-                                            @endif
-                                        </p>
                                     </div>
                                     
                                     @if($canEdit)
                                         <div class="flex gap-2 space-x-2 ml-4">
-                                            <a href="{{ route('wishes.edit', $wish) }}" class="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300">
+                                            <a href="{{ route('wishes.edit', $wish) }}" class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300">
                                                 Edit
                                             </a>
                                             <form method="POST" action="{{ route('wishes.destroy', $wish) }}" class="inline" 

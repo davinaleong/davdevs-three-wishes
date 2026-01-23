@@ -87,7 +87,7 @@
                             <a href="{{ route('wishes.index') }}" class="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200">
                                 Cancel
                             </a>
-                            <button type="submit" class="px-6 py-2 text-white font-semibold rounded-md shadow-sm hover:opacity-90 transition-opacity" style="background-color: var(--color-primary, #6366f1);">
+                            <button type="submit" class="px-6 py-2 bg-indigo-500 text-white font-semibold rounded-md shadow-sm hover:bg-indigo-600 focus:bg-indigo-600 active:bg-indigo-700 transition-colors duration-150">
                                 Update Wish
                             </button>
                         </div>

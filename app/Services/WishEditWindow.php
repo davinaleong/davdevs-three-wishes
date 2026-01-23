@@ -56,9 +56,9 @@ class WishEditWindow
         $currentYear = Carbon::now('Asia/Singapore')->year;
         
         if ($theme->year == $currentYear) {
-            return "Editing closes on February 26, {$theme->year}";
+            return "Editing closes on 26 February {$theme->year}";
         }
         
-        return "Editing closes on January 31, {$theme->year}";
+        return "Editing closes on 31 January {$theme->year}";
     }
 }
