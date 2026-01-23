@@ -34,7 +34,7 @@
             
             @if($activeTheme?->theme_tagline)
                 <p class="text-xl md:text-2xl text-gray-600 mb-6">
-                    {{ $activeTheme->theme_tagline }}
+                    {{ $activeTheme->year ?? date('Y') }}
                 </p>
             @endif
         </div>
