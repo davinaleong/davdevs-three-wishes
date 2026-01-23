@@ -3,14 +3,14 @@
         <div class="flex justify-between items-center">
             <div>
                 <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                    {{ __('My Wishes') }} - {{ $activeTheme->theme_title }}
+                    My Wishes - {{ $activeTheme->theme_title }}
                 </h2>
                 <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
                     {{ $cutoffDescription }}
                 </p>
             </div>
             @if($canEdit && $wishes->count() < 10)
-                <a href="{{ route('wishes.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                <a href="{{ route('wishes.create') }}" class="bg-purple-500 text-white font-bold py-2 px-4 rounded">
                     Add New Wish
                 </a>
             @endif
@@ -55,11 +55,16 @@
                                     <span class="text-amber-600 dark:text-amber-400">(Minimum 3 required)</span>
                                 @endif
                             </p>
+                            @if($canEdit && $wishes->count() < 10)
+                                <a href="{{ route('wishes.create') }}" class="inline-block mt-3 bg-indigo-500 text-white font-bold py-2 px-4 rounded text-sm">
+                                    Add New Wish
+                                </a>
+                            @endif
                         </div>
                         <div class="flex space-x-2">
                             @for($i = 1; $i <= 10; $i++)
                                 @if($wishes->where('position', $i)->first())
-                                    <div class="w-4 h-4 rounded" style="background-color: var(--color-primary, #6366f1);" title="Wish {{ $i }}"></div>
+                                    <div class="w-4 h-4 bg-blue-500 rounded" title="Wish {{ $i }}"></div>
                                 @else
                                     <div class="w-4 h-4 bg-gray-300 dark:bg-gray-600 rounded" title="Empty slot {{ $i }}"></div>
                                 @endif
@@ -71,14 +76,14 @@
 
             <!-- Wishes List -->
             @if($wishes->count() > 0)
-                <div class="grid gap-6">
+                <div class="grid gap-6 mb-4">
                     @foreach($wishes as $wish)
                         <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                             <div class="p-6">
                                 <div class="flex justify-between items-start">
                                     <div class="flex-1">
-                                        <div class="flex items-center mb-2">
-                                            <span class="inline-flex items-center justify-center w-8 h-8 rounded-full text-white font-semibold text-sm mr-3" style="background-color: var(--color-primary, #6366f1);">
+                                        <div class="flex items-center gap-2 mb-2">
+                                            <span class="inline-flex items-center justify-center w-8 h-8 rounded-full text-white font-semibold text-sm" style="background-color: var(--color-primary, #6366f1);">
                                                 {{ $wish->position }}
                                             </span>
                                             <span class="text-sm text-gray-500 dark:text-gray-400">
@@ -97,7 +102,7 @@
                                     </div>
                                     
                                     @if($canEdit)
-                                        <div class="flex space-x-2 ml-4">
+                                        <div class="flex gap-2 space-x-2 ml-4">
                                             <a href="{{ route('wishes.edit', $wish) }}" class="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300">
                                                 Edit
                                             </a>
@@ -118,7 +123,7 @@
                 </div>
             @else
                 <!-- Empty State -->
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-4">
                     <div class="p-12 text-center">
                         <div class="text-6xl mb-4">✨</div>
                         <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">

@@ -66,7 +66,7 @@
                         </div>
 
                         <!-- Form Actions -->
-                        <div class="flex items-center justify-end space-x-4">
+                        <div class="flex items-center justify-end gap-2 space-x-4">
                             <a href="{{ route('wishes.index') }}" class="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200">
                                 Cancel
                             </a>
