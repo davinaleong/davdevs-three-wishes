@@ -13,7 +13,8 @@
         "ext-pdo": "*",
         "ext-pgsql": "*",
         "laravel/framework": "^12.0",
-        "laravel/tinker": "^2.10.1"
+        "laravel/tinker": "^2.10.1",
+        "symfony/mailgun-mailer": "^8.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
