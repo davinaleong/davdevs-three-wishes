@@ -19,13 +19,5 @@ class DatabaseSeeder extends Seeder
         $this->call([
             ThemeSeeder::class,
         ]);
-
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'uuid' => Str::uuid(),
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
     }
 }
