@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verify Your Email - Three Wishes {{ $year }}</title>
+    <title>Verify Your Email -  Dav/Devs Three Wishes {{ $year }}</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
@@ -106,7 +106,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>✨ Welcome to <span class="year-highlight">Three Wishes</span> ✨</h1>
+            <h1>✨ Welcome to <span class="year-highlight">Dav/Devs Three Wishes</span> ✨</h1>
             <p>"And we know that in all things God works for the good of those who love him, who have been called according to his purpose." - Romans 8:28</p>
             @if($yearTheme)
                 <p><strong>{{ $year }} Theme:</strong> {{ $yearTheme->theme_title }}</p>
@@ -124,7 +124,7 @@
             Hello, {{ $user->name }}! 🙏
         </div>
 
-        <p>Thank you for joining our Three Wishes community! We're excited to have you on this journey of faith and spiritual intention-setting for {{ $year }}.</p>
+        <p>Thank you for joining our Dav/Devs Three Wishes community! We're excited to have you on this journey of faith and spiritual intention-setting for {{ $year }}.</p>
 
         <div class="info-box">
             <div class="info-title">📧 Email Verification Required</div>
@@ -133,7 +133,7 @@
 
         <div class="verification-section">
             <h3>✨ Verify Your Email Address ✨</h3>
-            <p>Click the button below to confirm your email and start your Three Wishes journey!</p>
+            <p>Click the button below to confirm your email and start your Dav/Devs Three Wishes journey!</p>
             <a href="{{ $verificationUrl }}" class="verify-button">Verify Email Address</a>
         </div>
 
@@ -155,14 +155,14 @@
 
         <div class="footer">
             <p>Blessings and grace,<br>
-            <strong>The Three Wishes Ministry Team</strong></p>
+            <strong>The Dav/Devs Three Wishes Ministry Team</strong></p>
             
             <p style="margin-top: 15px; font-style: italic;">
                 "For I know the plans I have for you," declares the Lord, "plans to prosper you and not to harm you, to give you hope and a future." - Jeremiah 29:11
             </p>
             
             <p style="margin-top: 20px; font-size: 12px;">
-                You received this email because you created a Three Wishes account.<br>
+                You received this email because you created a Dav/Devs Three Wishes account.<br>
                 If you didn't create an account, no further action is required.
             </p>
         </div>

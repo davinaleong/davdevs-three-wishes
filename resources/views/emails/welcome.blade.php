@@ -119,7 +119,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>✨ Welcome to <span class="year-highlight">Three Wishes</span> ✨</h1>
+            <h1>✨ Welcome to <span class="year-highlight">Dav/Devs Three Wishes</span> ✨</h1>
             <p>"And we know that in all things God works for the good of those who love him, who have been called according to his purpose." - Romans 8:28</p>
             @if($yearTheme)
                 <p><strong>{{ $year }} Theme:</strong> {{ $yearTheme->theme_title }}</p>
@@ -137,14 +137,14 @@
             Welcome, {{ $user->name }}! 🙏
         </div>
 
-        <p>Thank you for joining our Three Wishes community! Your email has been successfully verified, and we're excited to journey with you as you seek God's will and set your spiritual intentions for this year.</p>
+        <p>Thank you for joining our Dav/Devs Three Wishes community! Your email has been successfully verified, and we're excited to journey with you as you seek God's will and set your spiritual intentions for this year.</p>
 
         <div class="welcome-section">
-            <div class="section-title">What is Three Wishes?</div>
+            <div class="section-title">What is Dav/Devs Three Wishes?</div>
             
             <div class="info-box">
                 <div class="info-title">🎯 Your Spiritual Goals</div>
-                <div class="info-content">Three Wishes is a sacred space where you can prayerfully set three meaningful intentions for the year, trusting God to work in His perfect timing.</div>
+                <div class="info-content">Dav/Devs Three Wishes is a sacred space where you can prayerfully set three meaningful intentions for the year, trusting God to work in His perfect timing.</div>
             </div>
 
             <div class="info-box">
@@ -183,14 +183,14 @@
 
         <div class="footer">
             <p>Blessings and grace,<br>
-            <strong>The Three Wishes Ministry Team</strong></p>
+            <strong>The Dav/Devs Three Wishes Ministry Team</strong></p>
             
             <p style="margin-top: 15px; font-style: italic;">
                 "Now to him who is able to do immeasurably more than all we ask or imagine, according to his power that is at work within us..." - Ephesians 3:20
             </p>
             
             <p style="margin-top: 20px; font-size: 12px;">
-                You received this email because you just verified your Three Wishes account.<br>
+                You received this email because you just verified your Dav/Devs Three Wishes account.<br>
                 To manage your email preferences, visit your account settings.
             </p>
         </div>

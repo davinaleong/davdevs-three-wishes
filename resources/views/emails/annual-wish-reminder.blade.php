@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your {{ $year }} Three Wishes</title>
+    <title>Your {{ $year }} Dav/Devs Three Wishes</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
@@ -120,7 +120,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>✨ Your <span class="year-highlight">{{ $year }}</span> Three Wishes ✨</h1>
+            <h1>✨ Your <span class="year-highlight">{{ $year }}</span> Dav/Devs Three Wishes ✨</h1>
             <p>"For I know the plans I have for you," declares the Lord, "plans to prosper you and not to harm you, to give you hope and a future." - Jeremiah 29:11</p>
             @if($yearTheme)
                 <p><strong>{{ $year }} Theme:</strong> {{ $yearTheme->theme_title }}</p>
@@ -169,10 +169,10 @@
         <div class="cta-section">
             <h3>✨ Stepping into {{ $year + 1 }} with Faith ✨</h3>
             <p>As you enter this new year, what hopes will you bring before the Lord? What dreams is He placing on your heart? Trust in His perfect timing and goodness as you set your intentions for {{ $year + 1 }}.</p>
-            <a href="{{ config('app.url') }}" class="cta-button">Prayerfully Set My New Three Wishes</a>
+            <a href="{{ config('app.url') }}" class="cta-button">Prayerfully Set My New Dav/Devs Three Wishes</a>
         </div>
 
-        <p>The practice of Three Wishes reminds us that while we may not know what the future holds, we know Who holds the future. In every season, we can bring our hopes and dreams before our loving Father, trusting in His perfect will.</p>
+        <p>The practice of Dav/Devs Three Wishes reminds us that while we may not know what the future holds, we know Who holds the future. In every season, we can bring our hopes and dreams before our loving Father, trusting in His perfect will.</p>
 
         <p>May {{ $year + 1 }} be a year where you experience God's abundant blessings and walk closely with Him! 🙏</p>
 
@@ -180,14 +180,14 @@
 
         <div class="footer">
             <p>Praying God's richest blessings over your life,<br>
-            <strong>The Three Wishes Ministry Team</strong></p>
+            <strong>The Dav/Devs Three Wishes Ministry Team</strong></p>
             
             <p style="margin-top: 15px; font-style: italic;">
                 "May the God of hope fill you with all joy and peace as you trust in him, so that you may overflow with hope by the power of the Holy Spirit." - Romans 15:13
             </p>
             
             <p style="margin-top: 20px; font-size: 12px;">
-                This email was sent because you have an account with Three Wishes.<br>
+                This email was sent because you have an account with Dav/Devs Three Wishes.<br>
                 If you no longer wish to receive these annual reminders, you can update your preferences in your account settings.
             </p>
         </div>
