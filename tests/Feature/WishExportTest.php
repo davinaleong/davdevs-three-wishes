@@ -289,4 +289,134 @@ describe('WishController@exportCsv', function () {
         
         expect($content)->toContain($expectedDate);
     });
+
+    it('handles special characters in wish content for csv export', function () {
+        $user = User::factory()->create(['email_verified_at' => now()]);
+        $theme = Theme::factory()->create(['year' => 2026, 'is_active' => true]);
+        
+        Wish::factory()->create([
+            'user_id' => $user->id,
+            'theme_id' => $theme->id,
+            'content' => 'I wish to "travel the world", especially places with commas, and say \'hello\'',
+            'position' => 1,
+        ]);
+
+        $response = $this->actingAs($user)->get(route('wishes.export.csv'));
+
+        $content = $response->getContent();
+        expect($content)->toContain('"I wish to ""travel the world"", especially places with commas, and say \'hello\'"');
+    });
+
+    it('handles themes with special characters in title for filename generation', function () {
+        $user = User::factory()->create(['email_verified_at' => now()]);
+        $theme = Theme::factory()->create([
+            'year' => 2026, 
+            'is_active' => true,
+            'theme_title' => 'Hope & Faith: A Journey!'
+        ]);
+
+        $response = $this->actingAs($user)->get(route('wishes.export.text'));
+
+        $disposition = $response->headers->get('Content-Disposition');
+        expect($disposition)->toContain('wishes_hope_faith_a_journey_2026.txt');
+    });
+
+    it('exports only wishes from active theme when multiple themes exist', function () {
+        $user = User::factory()->create(['email_verified_at' => now()]);
+        $activeTheme = Theme::factory()->create(['year' => 2026, 'is_active' => true]);
+        $inactiveTheme = Theme::factory()->create(['year' => 2025, 'is_active' => false]);
+        
+        Wish::factory()->create([
+            'user_id' => $user->id,
+            'theme_id' => $activeTheme->id,
+            'content' => 'Active theme wish',
+            'position' => 1,
+        ]);
+        
+        Wish::factory()->create([
+            'user_id' => $user->id,
+            'theme_id' => $inactiveTheme->id,
+            'content' => 'Inactive theme wish',
+            'position' => 1,
+        ]);
+
+        $response = $this->actingAs($user)->get(route('wishes.export.text'));
+
+        $content = $response->getContent();
+        expect($content)
+            ->toContain('Active theme wish')
+            ->not->toContain('Inactive theme wish');
+    });
+
+    it('handles long wish content in text export format', function () {
+        $user = User::factory()->create(['email_verified_at' => now()]);
+        $theme = Theme::factory()->create(['year' => 2026, 'is_active' => true]);
+        
+        $longContent = str_repeat('This is a very long wish content that should be properly handled in the export. ', 20);
+        
+        Wish::factory()->create([
+            'user_id' => $user->id,
+            'theme_id' => $theme->id,
+            'content' => $longContent,
+            'position' => 1,
+        ]);
+
+        $response = $this->actingAs($user)->get(route('wishes.export.text'));
+
+        $content = $response->getContent();
+        expect($content)
+            ->toContain('1. ' . $longContent)
+            ->toContain('MY WISHES:');
+    });
+});
+
+describe('WishController@export UI Integration', function () {
+    it('displays export dropdown when user has wishes', function () {
+        $user = User::factory()->create(['email_verified_at' => now()]);
+        $theme = Theme::factory()->create(['year' => 2026, 'is_active' => true]);
+        
+        Wish::factory()->create([
+            'user_id' => $user->id,
+            'theme_id' => $theme->id,
+            'content' => 'Test wish',
+            'position' => 1,
+        ]);
+
+        $response = $this->actingAs($user)->get(route('wishes.index'));
+
+        $response->assertStatus(200)
+            ->assertSee('Export')
+            ->assertSee('Text Format')
+            ->assertSee('CSV Format');
+    });
+
+    it('hides export dropdown when user has no wishes', function () {
+        $user = User::factory()->create(['email_verified_at' => now()]);
+        $theme = Theme::factory()->create(['year' => 2026, 'is_active' => true]);
+
+        $response = $this->actingAs($user)->get(route('wishes.index'));
+
+        $response->assertStatus(200)
+            ->assertDontSee('Export')
+            ->assertDontSee('Text Format')
+            ->assertDontSee('CSV Format');
+    });
+
+    it('export dropdown contains correct route links', function () {
+        $user = User::factory()->create(['email_verified_at' => now()]);
+        $theme = Theme::factory()->create(['year' => 2026, 'is_active' => true]);
+        
+        Wish::factory()->create([
+            'user_id' => $user->id,
+            'theme_id' => $theme->id,
+            'content' => 'Test wish',
+            'position' => 1,
+        ]);
+
+        $response = $this->actingAs($user)->get(route('wishes.index'));
+
+        $response->assertStatus(200)
+            ->assertSee(route('wishes.export.text'))
+            ->assertSee(route('wishes.export.csv'));
+    });
 });
