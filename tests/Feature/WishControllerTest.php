@@ -93,7 +93,8 @@ it('cannot show other users wishes', function () {
 
 it('can update own wish', function () {
     $user = User::factory()->create();
-    $theme = Theme::factory()->create();
+    // Create a theme for 2026 (current year) which should allow editing
+    $theme = Theme::factory()->create(['year' => 2026]);
     $wish = Wish::factory()->create([
         'user_id' => $user->id,
         'theme_id' => $theme->id,
@@ -138,12 +139,8 @@ it('can reorder wishes', function () {
     $user = User::factory()->create([
         'email_verified_at' => now(),
     ]);
-    $theme = Theme::factory()->create();
-    
-    // Mock WishEditWindow to allow editing
-    $this->partialMock(\App\Services\WishEditWindow::class, function ($mock) {
-        $mock->shouldReceive('isOpen')->andReturn(true);
-    });
+    // Create a theme for 2026 (current year) which should allow editing
+    $theme = Theme::factory()->create(['year' => 2026]);
     
     // Mock ThemeService to return our test theme
     $this->partialMock(\App\Services\ThemeService::class, function ($mock) use ($theme) {
