@@ -38,7 +38,7 @@
                                 Send a verification email to test the design and functionality.
                             </p>
                             <a href="{{ route('dev.emails.verification') }}" 
-                               class="inline-flex items-center px-4 py-2 bg-indigo-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-600 transition">
+                               class="inline-flex items-center px-4 py-2 bg-blue-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-600 transition">
                                 Send Verification Email
                             </a>
                         </div>
@@ -50,7 +50,7 @@
                                 Send a password reset email to test the design and functionality.
                             </p>
                             <a href="{{ route('dev.emails.password-reset') }}" 
-                               class="inline-flex items-center px-4 py-2 bg-indigo-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-600 transition">
+                               class="inline-flex items-center px-4 py-2 bg-blue-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-600 transition">
                                 Send Password Reset
                             </a>
                         </div>
@@ -62,7 +62,7 @@
                                 Send a year-end wishes reminder email (Dec 31 email).
                             </p>
                             <a href="{{ route('dev.emails.year-end-wishes') }}" 
-                               class="inline-flex items-center px-4 py-2 bg-indigo-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-600 transition">
+                               class="inline-flex items-center px-4 py-2 bg-blue-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-600 transition">
                                 Send Wishes Email
                             </a>
                         </div>

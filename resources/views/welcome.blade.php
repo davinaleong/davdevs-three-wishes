@@ -28,7 +28,7 @@
                 <img src="{{ asset($activeTheme->logo_path) }}" alt="Logo" class="mx-auto mb-6 h-16">
             @endif
             
-            <h1 class="text-4xl md:text-6xl font-bold mb-4" style="color: var(--color-primary, #6366f1);">
+            <h1 class="text-4xl md:text-6xl font-bold mb-4" style="color: #2b7fff;">
                 {{ $activeTheme?->theme_title ?? 'Three Wishes ' . date('Y') }}
             </h1>
             
@@ -40,11 +40,11 @@
         </div>
 
         <!-- Bible Verse -->
-        <div class="bg-white rounded-2xl shadow-lg p-8 mb-8 border-l-4" style="border-color: var(--color-accent, #06b6d4);">
+        <div class="bg-white rounded-2xl shadow-lg p-8 mb-8 border-l-4" style="border-color: #2b7fff;">
             <blockquote class="text-lg md:text-xl text-gray-700 italic mb-4">
                 "{{ $activeTheme?->theme_verse_text ?? 'For I know the thoughts that I think toward you, says the Lord, thoughts of peace and not of evil, to give you a future and a hope.' }}"
             </blockquote>
-            <cite class="text-sm font-medium" style="color: var(--color-primary, #6366f1);">
+            <cite class="text-sm font-medium" style="color: #1447e6;">
                 — {{ $activeTheme?->theme_verse_reference ?? 'Jeremiah 29:11 (NKJV)' }}
             </cite>
         </div>
@@ -55,20 +55,20 @@
                 @auth
                     <a href="{{ route('wishes.index') }}" 
                        class="inline-flex items-center justify-center gap-2 px-8 py-3 rounded-lg font-semibold text-white transition duration-200 shadow-md hover:shadow-lg"
-                       style="background-color: var(--color-primary, #6366f1);">
+                       style="background-color: #2b7fff;">
                         View Your Wishes
                     </a>
                 @else
                     <a href="{{ route('login') }}" 
                        class="inline-flex items-center justify-center gap-2 px-8 py-3 rounded-lg border-2 font-semibold transition duration-200"
-                       style="border-color: var(--color-primary, #6366f1); color: var(--color-primary, #6366f1);">
+                       style="border-color: #2b7fff; color: #2b7fff;">
                         Log In
                     </a>
                     
                     @if (Route::has('register'))
                         <a href="{{ route('register') }}" 
                            class="inline-flex items-center justify-center gap-2 px-8 py-3 rounded-lg font-semibold text-white transition duration-200 shadow-md hover:shadow-lg"
-                           style="background-color: var(--color-primary, #6366f1);">
+                           style="background-color: #2b7fff;">
                             Get Started
                         </a>
                     @endif

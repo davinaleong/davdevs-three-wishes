@@ -25,7 +25,7 @@
                             </label>
                             <select id="position" 
                                     name="position" 
-                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300" 
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300" 
                                     required>
                                 @for($i = 1; $i <= 10; $i++)
                                     <option value="{{ $i }}" {{ old('position', $wish->position) == $i ? 'selected' : '' }}>
@@ -47,7 +47,7 @@
                             <textarea id="content" 
                                     name="content" 
                                     rows="4" 
-                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300" 
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300" 
                                     placeholder="Enter your wish here..."
                                     maxlength="1000"
                                     required>{{ old('content', $wish->content) }}</textarea>
@@ -87,7 +87,7 @@
                             <a href="{{ route('wishes.index') }}" class="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200">
                                 Cancel
                             </a>
-                            <button type="submit" class="px-6 py-2 bg-indigo-500 text-white font-semibold rounded-md shadow-sm hover:bg-indigo-600 focus:bg-indigo-600 active:bg-indigo-700 transition-colors duration-150">
+                            <button type="submit" class="px-6 py-2 bg-blue-500 text-white font-semibold rounded-md shadow-sm hover:bg-blue-600 focus:bg-blue-600 active:bg-blue-700 transition-colors duration-150">
                                 Update Wish
                             </button>
                         </div>

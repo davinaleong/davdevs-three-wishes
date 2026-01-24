@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex justify-between items-center">
             <div>
-                <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                <h2 class="font-semibold text-xl leading-tight" style="color: #1447e6;">
                     My Wishes - {{ $activeTheme->theme_title }}
                 </h2>
                 <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
@@ -10,7 +10,7 @@
                 </p>
             </div>
             @if($canEdit && $wishes->count() < 10)
-                <a href="{{ route('wishes.create') }}" class="inline-flex items-center px-4 py-2 bg-indigo-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-600 focus:bg-indigo-600 active:bg-indigo-700 transition ease-in-out duration-150">
+                <a href="{{ route('wishes.create') }}" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest transition ease-in-out duration-150" style="background-color: #2b7fff; hover:background-color: #1447e6; focus:background-color: #1447e6; active:background-color: #1447e6;">
                     Add New Wish
                 </a>
             @endif
@@ -59,7 +59,7 @@
                                 @endif
                             </p>
                             @if($canEdit && $wishes->get($activeTheme->year, collect())->count() < 10)
-                                <a href="{{ route('wishes.create') }}" class="inline-flex items-center mt-3 px-4 py-2 bg-indigo-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-600 focus:bg-indigo-600 active:bg-indigo-700 transition ease-in-out duration-150">
+                                <a href="{{ route('wishes.create') }}" class="inline-flex items-center mt-3 px-4 py-2 bg-blue-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-600 focus:bg-blue-600 active:bg-blue-700 transition ease-in-out duration-150">
                                     Add New Wish
                                 </a>
                             @endif
@@ -70,7 +70,7 @@
                                     $activeThemeWishes = $wishes->get($activeTheme->year, collect());
                                 @endphp
                                 @if($activeThemeWishes->where('position', $i)->first())
-                                    <div class="w-4 h-4 bg-indigo-500 rounded" title="Wish {{ $i }}"></div>
+                                    <div class="w-4 h-4 bg-blue-500 rounded" title="Wish {{ $i }}"></div>
                                 @else
                                     <div class="w-4 h-4 bg-gray-300 dark:bg-gray-600 rounded" title="Empty slot {{ $i }}"></div>
                                 @endif
@@ -108,7 +108,7 @@
                                             
                                             @if($canEdit && $wish->theme_id === $activeTheme->id)
                                                 <div class="flex gap-2 space-x-2 ml-4">
-                                                    <a href="{{ route('wishes.edit', $wish) }}" class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300">
+                                                    <a href="{{ route('wishes.edit', $wish) }}" class="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300">
                                                         Edit
                                                     </a>
                                                     <form method="POST" action="{{ route('wishes.destroy', $wish) }}" class="inline" 
@@ -140,7 +140,7 @@
                             Start creating your wishes for {{ $activeTheme->year }}. You need at least 3 wishes.
                         </p>
                         @if($canEdit)
-                            <a href="{{ route('wishes.create') }}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white" style="background-color: var(--color-primary, #6366f1);">
+                            <a href="{{ route('wishes.create') }}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                                 Create Your First Wish
                             </a>
                         @endif

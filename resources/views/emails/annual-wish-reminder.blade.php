@@ -25,7 +25,7 @@
             margin-bottom: 40px;
         }
         .header h1 {
-            color: #2c3e50;
+            color: #2b7fff;
             margin-bottom: 10px;
             font-size: 28px;
         }
@@ -67,7 +67,7 @@
             line-height: 1.5;
         }
         .cta-section {
-            background: linear-gradient(135deg, #3498db, #2980b9);
+            background: linear-gradient(135deg, #2b7fff, #1447e6);
             color: white;
             padding: 30px;
             border-radius: 8px;
@@ -76,7 +76,7 @@
         }
         .cta-button {
             display: inline-block;
-            background: #6366f1;
+            background: #2b7fff;
             color: white;
             padding: 12px 30px;
             text-decoration: none;
@@ -189,8 +189,8 @@
             <p style="margin-top: 20px; font-size: 12px;">
                 This email was sent because you have an account with Dav/Devs Three Wishes.<br>
                 If you no longer wish to receive these annual reminders, you can update your preferences in your account settings.<br>
-                <a href="{{ config('app.url') }}/privacy" style="color: #6366f1; text-decoration: underline;">Privacy Policy</a> | 
-                <a href="{{ config('app.url') }}/terms" style="color: #6366f1; text-decoration: underline;">Terms & Conditions</a>
+                <a href="{{ config('app.url') }}/privacy" style="color: #2b7fff; text-decoration: underline;">Privacy Policy</a> | 
+                <a href="{{ config('app.url') }}/terms" style="color: #2b7fff; text-decoration: underline;">Terms & Conditions</a>
             </p>
         </div>
     </div>

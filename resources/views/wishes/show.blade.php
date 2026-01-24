@@ -20,7 +20,7 @@
                         @can('update', $wish)
                             <div class="flex gap-2">
                                 <a href="{{ route('wishes.edit', $wish) }}" 
-                                   class="inline-flex items-center px-4 py-2 bg-indigo-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-600 focus:bg-indigo-600 active:bg-indigo-700 transition ease-in-out duration-150">
+                                   class="inline-flex items-center px-4 py-2 bg-blue-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-600 focus:bg-blue-600 active:bg-blue-700 transition ease-in-out duration-150">
                                     Edit Wish
                                 </a>
                                 <a href="{{ route('wishes.index') }}" 
@@ -39,7 +39,7 @@
                     </div>
 
                     @if($wish->theme && $wish->theme->verse_text)
-                        <div class="mt-8 bg-indigo-50 dark:bg-indigo-900/20 p-6 rounded-lg">
+                        <div class="mt-8 bg-blue-50 dark:bg-blue-900/20 p-6 rounded-lg">
                             <h3 class="text-lg font-semibold mb-3">Theme Verse:</h3>
                             <blockquote class="italic text-gray-700 dark:text-gray-300 mb-2">
                                 "{{ $wish->theme->verse_text }}"

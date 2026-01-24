@@ -25,7 +25,7 @@
             margin-bottom: 40px;
         }
         .header h1 {
-            color: {{ $yearTheme && $yearTheme->getColors('primary') ? $yearTheme->getColors('primary') : '#2c3e50' }};
+            color: #2b7fff;
             margin-bottom: 10px;
             font-size: 28px;
         }
@@ -36,28 +36,28 @@
         .greeting {
             font-size: 18px;
             margin-bottom: 30px;
-            color: {{ $yearTheme && $yearTheme->getColors('primary') ? $yearTheme->getColors('primary') : '#2c3e50' }};
+            color: #1447e6;
         }
         .welcome-section {
             margin: 40px 0;
         }
         .section-title {
             font-size: 20px;
-            color: {{ $yearTheme && $yearTheme->getColors('primary') ? $yearTheme->getColors('primary') : '#2c3e50' }};
+            color: #2b7fff;
             margin-bottom: 20px;
-            border-bottom: 2px solid {{ $yearTheme && $yearTheme->getColors('accent') ? $yearTheme->getColors('accent') : '#3498db' }};
+            border-bottom: 2px solid #2b7fff;
             padding-bottom: 10px;
         }
         .info-box {
-            background: {{ $yearTheme && $yearTheme->getColors('light') ? $yearTheme->getColors('light') : '#f8f9fa' }};
-            border-left: 4px solid {{ $yearTheme && $yearTheme->getColors('accent') ? $yearTheme->getColors('accent') : '#3498db' }};
+            background: #f1f5f9;
+            border-left: 4px solid #2b7fff;
             padding: 20px;
             margin-bottom: 20px;
             border-radius: 0 6px 6px 0;
         }
         .info-title {
             font-weight: bold;
-            color: {{ $yearTheme && $yearTheme->getColors('primary') ? $yearTheme->getColors('primary') : '#2c3e50' }};
+            color: #1447e6;
             margin-bottom: 8px;
             font-size: 16px;
         }
@@ -66,7 +66,7 @@
             line-height: 1.5;
         }
         .cta-section {
-            background: linear-gradient(135deg, {{ $yearTheme && $yearTheme->getColors('accent') ? $yearTheme->getColors('accent') : '#3498db' }}, {{ $yearTheme && $yearTheme->getColors('primary') ? $yearTheme->getColors('primary') : '#2980b9' }});
+            background: linear-gradient(135deg, #2b7fff, #1447e6);
             color: white;
             padding: 30px;
             border-radius: 8px;
@@ -75,7 +75,7 @@
         }
         .cta-button {
             display: inline-block;
-            background: #6366f1;
+            background: #2b7fff;
             color: white;
             padding: 12px 30px;
             text-decoration: none;
