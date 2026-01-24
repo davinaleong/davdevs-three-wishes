@@ -1,0 +1,175 @@
+<?php
+
+use App\Models\User;
+use App\Models\Theme;
+use App\Models\Wish;
+
+it('displays wishes index page', function () {
+    $user = User::factory()->create();
+    $theme = Theme::factory()->create(['year' => now()->year, 'is_active' => true]);
+
+    $response = $this->actingAs($user)->get(route('wishes.index'));
+
+    $response->assertStatus(200)
+        ->assertViewIs('wishes.index')
+        ->assertViewHas('wishes')
+        ->assertViewHas('activeTheme')
+        ->assertViewHas('canEdit');
+});
+
+it('shows create wish page', function () {
+    $user = User::factory()->create();
+    $theme = Theme::factory()->create(['year' => now()->year, 'is_active' => true]);
+
+    $response = $this->actingAs($user)->get(route('wishes.create'));
+
+    $response->assertStatus(200)
+        ->assertViewIs('wishes.create')
+        ->assertViewHas('activeTheme')
+        ->assertViewHas('canEdit');
+});
+
+it('can store a new wish', function () {
+    $user = User::factory()->create();
+    $theme = Theme::factory()->create(['year' => now()->year, 'is_active' => true]);
+
+    $response = $this->actingAs($user)
+        ->post(route('wishes.store'), [
+            'wish_text' => 'Test spiritual intention',
+            'order' => 1,
+        ]);
+
+    $response->assertRedirect(route('wishes.index'))
+        ->assertSessionHas('success');
+
+    $this->assertDatabaseHas('wishes', [
+        'user_id' => $user->id,
+        'wish_text' => 'Test spiritual intention',
+        'order' => 1,
+        'theme_id' => $theme->id,
+    ]);
+});
+
+it('validates required fields when storing', function () {
+    $user = User::factory()->create();
+
+    $response = $this->actingAs($user)
+        ->post(route('wishes.store'), [
+            'wish_text' => '',
+            'order' => '',
+        ]);
+
+    $response->assertSessionHasErrors(['wish_text', 'order']);
+});
+
+it('can show individual wish', function () {
+    $user = User::factory()->create();
+    $theme = Theme::factory()->create();
+    $wish = Wish::factory()->create([
+        'user_id' => $user->id,
+        'theme_id' => $theme->id,
+    ]);
+
+    $response = $this->actingAs($user)->get(route('wishes.show', $wish));
+
+    $response->assertStatus(200)
+        ->assertViewIs('wishes.show')
+        ->assertViewHas('wish', $wish);
+});
+
+it('cannot show other users wishes', function () {
+    $user1 = User::factory()->create();
+    $user2 = User::factory()->create();
+    $theme = Theme::factory()->create();
+    
+    $wish = Wish::factory()->create([
+        'user_id' => $user2->id,
+        'theme_id' => $theme->id,
+    ]);
+
+    $response = $this->actingAs($user1)->get(route('wishes.show', $wish));
+
+    $response->assertStatus(403);
+});
+
+it('can update own wish', function () {
+    $user = User::factory()->create();
+    $theme = Theme::factory()->create();
+    $wish = Wish::factory()->create([
+        'user_id' => $user->id,
+        'theme_id' => $theme->id,
+        'wish_text' => 'Original wish',
+    ]);
+
+    $response = $this->actingAs($user)
+        ->put(route('wishes.update', $wish), [
+            'wish_text' => 'Updated spiritual intention',
+            'order' => $wish->order,
+        ]);
+
+    $response->assertRedirect(route('wishes.index'))
+        ->assertSessionHas('success');
+
+    $this->assertDatabaseHas('wishes', [
+        'id' => $wish->id,
+        'wish_text' => 'Updated spiritual intention',
+    ]);
+});
+
+it('can delete own wish', function () {
+    $user = User::factory()->create();
+    $theme = Theme::factory()->create();
+    $wish = Wish::factory()->create([
+        'user_id' => $user->id,
+        'theme_id' => $theme->id,
+    ]);
+
+    $response = $this->actingAs($user)
+        ->delete(route('wishes.destroy', $wish));
+
+    $response->assertRedirect(route('wishes.index'))
+        ->assertSessionHas('success');
+
+    $this->assertDatabaseMissing('wishes', [
+        'id' => $wish->id,
+    ]);
+});
+
+it('can reorder wishes', function () {
+    $user = User::factory()->create();
+    $theme = Theme::factory()->create();
+    
+    $wish1 = Wish::factory()->create(['user_id' => $user->id, 'theme_id' => $theme->id, 'order' => 1]);
+    $wish2 = Wish::factory()->create(['user_id' => $user->id, 'theme_id' => $theme->id, 'order' => 2]);
+    $wish3 = Wish::factory()->create(['user_id' => $user->id, 'theme_id' => $theme->id, 'order' => 3]);
+
+    $response = $this->actingAs($user)
+        ->patch(route('wishes.reorder'), [
+            'wishes' => [$wish3->id, $wish1->id, $wish2->id]
+        ]);
+
+    $response->assertStatus(200)
+        ->assertJson(['success' => true]);
+
+    $wish1->refresh();
+    $wish2->refresh();
+    $wish3->refresh();
+
+    expect($wish3->order)->toBe(1)
+        ->and($wish1->order)->toBe(2)
+        ->and($wish2->order)->toBe(3);
+});
+
+it('requires authentication for all routes', function () {
+    $theme = Theme::factory()->create();
+    $wish = Wish::factory()->create(['theme_id' => $theme->id]);
+
+    $this->get(route('wishes.index'))->assertRedirect('/login');
+    $this->get(route('wishes.create'))->assertRedirect('/login');
+    $this->post(route('wishes.store'))->assertRedirect('/login');
+    $this->get(route('wishes.show', $wish))->assertRedirect('/login');
+    $this->get(route('wishes.edit', $wish))->assertRedirect('/login');
+    $this->put(route('wishes.update', $wish))->assertRedirect('/login');
+    $this->delete(route('wishes.destroy', $wish))->assertRedirect('/login');
+    $this->patch(route('wishes.reorder'))->assertRedirect('/login');
+});
