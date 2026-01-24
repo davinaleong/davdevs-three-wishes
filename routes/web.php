@@ -17,25 +17,10 @@ Route::get('/dashboard', function () {
     return redirect()->route('wishes.index');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/test', function () {
-    try {
-        $user = Auth::user();
-        $activeTheme = App\Services\ThemeService::getActiveTheme() ?: App\Services\ThemeService::getCurrentYearTheme();
-        
-        $wishes = $user->wishesForTheme($activeTheme)->get();
-        $canEdit = App\Services\WishEditWindow::isOpen($activeTheme);
-        $cutoffDescription = App\Services\WishEditWindow::getClosingDescription($activeTheme);
-        
-        return "Debug: User ID: {$user->id}, Theme: {$activeTheme->theme_title}, Wishes count: {$wishes->count()}, Can edit: " . ($canEdit ? 'yes' : 'no');
-    } catch (Exception $e) {
-        return "Error: " . $e->getMessage() . " at " . $e->getFile() . ":" . $e->getLine();
-    }
-})->middleware(['auth', 'verified']);
-
 // Wish routes - protected by auth and verified middleware
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/wishes/reorder', [WishController::class, 'reorder'])->name('wishes.reorder');
-    Route::get('/wishes/card', [WishController::class, 'card'])->name('wishes.card');
+    Route::get('/wishes/print', [WishController::class, 'print'])->name('wishes.print');
     Route::resource('wishes', WishController::class);
 });
 

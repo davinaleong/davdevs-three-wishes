@@ -224,7 +224,7 @@ class WishController extends Controller
     /**
      * Generate a wish card for printing
      */
-    public function card(Request $request)
+    public function print(Request $request)
     {
         $activeTheme = ThemeService::getActiveTheme() ?: ThemeService::getCurrentYearTheme();
         
@@ -234,7 +234,8 @@ class WishController extends Controller
             ->get();
             
         $layout = $request->get('layout', 'portrait-a4'); // Default layout
+        $themeCssVariables = ThemeService::getCssVariables($activeTheme);
         
-        return view('wishes.card', compact('wishes', 'activeTheme', 'layout'));
+        return view('wishes.print', compact('wishes', 'activeTheme', 'layout', 'themeCssVariables'));
     }
 }

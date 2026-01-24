@@ -19,7 +19,7 @@
                     $currentYearWishes = $wishes->get($activeTheme->year, collect());
                 @endphp
                 @if($currentYearWishes->count() > 0)
-                    <a href="{{ route('wishes.card') }}" target="_blank" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest transition ease-in-out duration-150" style="background-color: {{ $activeTheme->getColors('secondary') ?? '#F8BE5D' }}; color: {{ $activeTheme->getColors('primary') ?? '#002037' }}; hover:opacity: 0.9;">
+                    <a href="{{ route('wishes.print') }}" target="_blank" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest transition ease-in-out duration-150" style="background-color: {{ $activeTheme->getColors('secondary') ?? '#F8BE5D' }}; color: {{ $activeTheme->getColors('primary') ?? '#002037' }}; hover:opacity: 0.9;">
                         Print Card
                     </a>
                 @endif
