@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Theme;
 use App\Models\User;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Support\Facades\Event;
@@ -14,8 +15,25 @@ test('email verification screen can be rendered', function () {
 });
 
 test('email can be verified', function () {
-    // Skip this test for now - middleware/theme service issue
-    $this->markTestSkipped('Email verification has middleware conflicts - needs investigation');
+    // Create a theme for the current year to avoid middleware issues
+    Theme::factory()->create(['year' => date('Y'), 'is_active' => true]);
+    
+    $user = User::factory()->unverified()->create();
+
+    Event::fake();
+
+    $verificationUrl = URL::temporarySignedRoute(
+        'verification.verify',
+        now()->addMinutes(60),
+        ['id' => $user->id, 'hash' => sha1($user->email)]
+    );
+
+    $response = $this->actingAs($user)->get($verificationUrl);
+
+    $response->assertRedirect('/dashboard?verified=1');
+    
+    Event::assertDispatched(Verified::class);
+    expect($user->fresh()->hasVerifiedEmail())->toBeTrue();
 });
 
 test('email is not verified with invalid hash', function () {
