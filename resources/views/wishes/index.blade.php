@@ -23,13 +23,57 @@
                         <a href="{{ route('wishes.print') }}" target="_blank" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest transition ease-in-out duration-150" style="background-color: {{ $activeTheme->getColors('secondary') ?? '#F8BE5D' }}; color: {{ $activeTheme->getColors('primary') ?? '#002037' }}; hover:opacity: 0.9;">
                             Print Card
                         </a>
-                        <a href="{{ route('wishes.export.text') }}" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest transition ease-in-out duration-150" style="background-color: {{ $activeTheme->getColors('accent') ?? '#8BC34A' }}; color: {{ $activeTheme->getColors('background') ?? '#FFFFFF' }}; hover:opacity: 0.9;">
-                            Export Text
-                        </a>
-                        <a href="{{ route('wishes.export.csv') }}" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest transition ease-in-out duration-150" style="background-color: {{ $activeTheme->getColors('primary') ?? '#002037' }}; color: {{ $activeTheme->getColors('background') ?? '#FFFFFF' }}; hover:opacity: 0.9;">
-                            Export CSV
-                        </a>
+                        
+                        <!-- Export Dropdown -->
+                        <div class="relative inline-block text-left">
+                            <div>
+                                <button type="button" class="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest transition ease-in-out duration-150 hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100" style="background-color: {{ $activeTheme->getColors('accent') ?? '#8BC34A' }}; color: {{ $activeTheme->getColors('background') ?? '#FFFFFF' }}; focus:ring-color: {{ $activeTheme->getColors('accent') ?? '#8BC34A' }};" id="export-menu" aria-expanded="true" aria-haspopup="true" onclick="toggleDropdown()">
+                                    Export
+                                    <svg class="-mr-1 ml-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <div class="hidden absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" id="export-dropdown" role="menu" aria-orientation="vertical" aria-labelledby="export-menu" tabindex="-1">
+                                <div class="py-1" role="none">
+                                    <a href="{{ route('wishes.export.text') }}" class="text-gray-700 hover:bg-gray-100 hover:text-gray-900 block px-4 py-2 text-sm transition-colors duration-150" role="menuitem" tabindex="-1">
+                                        📄 Text Format
+                                    </a>
+                                    <a href="{{ route('wishes.export.csv') }}" class="text-gray-700 hover:bg-gray-100 hover:text-gray-900 block px-4 py-2 text-sm transition-colors duration-150" role="menuitem" tabindex="-1">
+                                        📊 CSV Format
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
+                    <!-- Dropdown JavaScript -->
+                    <script>
+                        function toggleDropdown() {
+                            const dropdown = document.getElementById('export-dropdown');
+                            const button = document.getElementById('export-menu');
+                            
+                            if (dropdown.classList.contains('hidden')) {
+                                dropdown.classList.remove('hidden');
+                                button.setAttribute('aria-expanded', 'true');
+                            } else {
+                                dropdown.classList.add('hidden');
+                                button.setAttribute('aria-expanded', 'false');
+                            }
+                        }
+
+                        // Close dropdown when clicking outside
+                        document.addEventListener('click', function(event) {
+                            const dropdown = document.getElementById('export-dropdown');
+                            const button = document.getElementById('export-menu');
+                            
+                            if (!button.contains(event.target) && !dropdown.contains(event.target)) {
+                                dropdown.classList.add('hidden');
+                                button.setAttribute('aria-expanded', 'false');
+                            }
+                        });
+                    </script>
                 @endif
             </div>
         </div>
