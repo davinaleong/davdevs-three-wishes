@@ -117,7 +117,7 @@ it('can update own wish', function () {
 
 it('can delete own wish', function () {
     $user = User::factory()->create();
-    $theme = Theme::factory()->create();
+    $theme = Theme::factory()->create(['year' => now()->year, 'is_active' => true]);
     $wish = Wish::factory()->create([
         'user_id' => $user->id,
         'theme_id' => $theme->id,
