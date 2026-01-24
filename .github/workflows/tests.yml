@@ -45,7 +45,12 @@ jobs:
         cache: 'npm'
 
     - name: Install PHP dependencies
-      run: composer install --prefer-dist --no-progress --no-suggest --no-interaction
+      run: |
+        # First try to install with platform requirements
+        composer install --prefer-dist --no-progress --no-interaction || {
+          echo "Installation failed with platform requirements, trying without..."
+          composer install --prefer-dist --no-progress --no-interaction --ignore-platform-req=ext-pgsql
+        }
 
     - name: Install Node dependencies
       run: npm ci
@@ -53,16 +58,24 @@ jobs:
     - name: Build frontend assets
       run: npm run build
 
-    - name: Copy environment file
-      run: cp .env.example .env.testing
+    - name: Copy and configure environment file
+      run: |
+        cp .env.example .env.testing
+        echo "DB_CONNECTION=pgsql" >> .env.testing
+        echo "DB_HOST=localhost" >> .env.testing
+        echo "DB_PORT=5432" >> .env.testing
+        echo "DB_DATABASE=testing" >> .env.testing
+        echo "DB_USERNAME=postgres" >> .env.testing
+        echo "DB_PASSWORD=password" >> .env.testing
 
     - name: Generate application key
       run: php artisan key:generate --env=testing
 
     - name: Set up database
       run: |
-        php artisan config:clear
+        php artisan config:clear --env=testing
         php artisan migrate --env=testing --force
+        php artisan config:cache --env=testing
 
     - name: Run Laravel Pint (Code Style) if available
       run: |
@@ -74,8 +87,9 @@ jobs:
         fi
 
     - name: Run PHPUnit tests
-      run: php artisan test --env=testing --parallel
+      run: php artisan test --env=testing --parallel --stop-on-failure
       env:
+        APP_ENV: testing
         DB_CONNECTION: pgsql
         DB_HOST: localhost
         DB_PORT: 5432

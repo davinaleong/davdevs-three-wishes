@@ -28,7 +28,12 @@ jobs:
         extensions: pdo, pdo_pgsql, pgsql
 
     - name: Install PHP dependencies
-      run: composer install --prefer-dist --no-dev --optimize-autoloader --no-interaction
+      run: |
+        # Install without dev dependencies for production
+        composer install --prefer-dist --no-dev --optimize-autoloader --no-interaction --ignore-platform-req=ext-pgsql || {
+          echo "Fallback: Installing with platform requirements ignored"
+          composer install --prefer-dist --no-dev --optimize-autoloader --no-interaction --ignore-platform-reqs
+        }
 
     - name: Setup Node.js
       uses: actions/setup-node@v4
@@ -42,8 +47,11 @@ jobs:
     - name: Build assets
       run: npm run build
 
-    - name: Copy environment file for testing
-      run: cp .env.example .env.testing
+    - name: Copy and configure environment file for testing
+      run: |
+        cp .env.example .env.testing
+        echo "DB_CONNECTION=sqlite" >> .env.testing
+        echo "DB_DATABASE=database/testing.sqlite" >> .env.testing
 
     - name: Generate application key for testing
       run: php artisan key:generate --env=testing
@@ -52,12 +60,14 @@ jobs:
     - name: Final test run before deployment
       run: |
         # Use SQLite for this final check since we just need to verify tests pass
+        mkdir -p database
         touch database/testing.sqlite
-        php artisan migrate --env=testing --force --database=testing
-        php artisan test --env=testing
+        php artisan migrate --env=testing --force
+        php artisan test --env=testing --stop-on-failure
       env:
-        DB_CONNECTION_TESTING: sqlite
-        DB_DATABASE_TESTING: database/testing.sqlite
+        APP_ENV: testing
+        DB_CONNECTION: sqlite
+        DB_DATABASE: database/testing.sqlite
 
     # Deploy to Heroku only if all tests pass
     - name: Deploy to Heroku
