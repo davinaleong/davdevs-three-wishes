@@ -11,11 +11,10 @@
     "require": {
         "php": "^8.2",
         "ext-pdo": "*",
-        "ext-pgsql": "*",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
-        "symfony/http-client": "^8.0",
-        "symfony/mailgun-mailer": "^8.0"
+        "symfony/http-client": "^7.0",
+        "symfony/mailgun-mailer": "^7.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
@@ -76,6 +75,15 @@
         ],
         "pre-package-uninstall": [
             "Illuminate\\Foundation\\ComposerScripts::prePackageUninstall"
+        ],
+        "test": [
+            "@php artisan test"
+        ],
+        "test-coverage": [
+            "@php artisan test --coverage"
+        ],
+        "pre-commit": [
+            "@php artisan test"
         ]
     },
     "extra": {

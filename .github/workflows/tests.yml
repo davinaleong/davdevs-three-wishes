@@ -1,0 +1,84 @@
+name: Laravel Tests
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        php-version: [8.2, 8.3]
+    
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: testing
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php-version }}
+        extensions: pdo, pdo_pgsql, pgsql
+        coverage: none
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+
+    - name: Install PHP dependencies
+      run: composer install --prefer-dist --no-progress --no-suggest --no-interaction
+
+    - name: Install Node dependencies
+      run: npm ci
+
+    - name: Build frontend assets
+      run: npm run build
+
+    - name: Copy environment file
+      run: cp .env.example .env.testing
+
+    - name: Generate application key
+      run: php artisan key:generate --env=testing
+
+    - name: Set up database
+      run: |
+        php artisan config:clear
+        php artisan migrate --env=testing --force
+
+    - name: Run Laravel Pint (Code Style) if available
+      run: |
+        if php artisan list | grep -q "pint"; then
+          echo "Running Laravel Pint..."
+          php artisan pint --test
+        else
+          echo "Laravel Pint not available, skipping code style check"
+        fi
+
+    - name: Run PHPUnit tests
+      run: php artisan test --env=testing --parallel
+      env:
+        DB_CONNECTION: pgsql
+        DB_HOST: localhost
+        DB_PORT: 5432
+        DB_DATABASE: testing
+        DB_USERNAME: postgres
+        DB_PASSWORD: password
