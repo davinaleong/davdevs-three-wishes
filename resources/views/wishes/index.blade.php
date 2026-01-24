@@ -19,9 +19,17 @@
                     $currentYearWishes = $wishes->get($activeTheme->year, collect());
                 @endphp
                 @if($currentYearWishes->count() > 0)
-                    <a href="{{ route('wishes.print') }}" target="_blank" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest transition ease-in-out duration-150" style="background-color: {{ $activeTheme->getColors('secondary') ?? '#F8BE5D' }}; color: {{ $activeTheme->getColors('primary') ?? '#002037' }}; hover:opacity: 0.9;">
-                        Print Card
-                    </a>
+                    <div class="flex flex-wrap gap-2">
+                        <a href="{{ route('wishes.print') }}" target="_blank" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest transition ease-in-out duration-150" style="background-color: {{ $activeTheme->getColors('secondary') ?? '#F8BE5D' }}; color: {{ $activeTheme->getColors('primary') ?? '#002037' }}; hover:opacity: 0.9;">
+                            Print Card
+                        </a>
+                        <a href="{{ route('wishes.export.text') }}" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest transition ease-in-out duration-150" style="background-color: {{ $activeTheme->getColors('accent') ?? '#8BC34A' }}; color: {{ $activeTheme->getColors('background') ?? '#FFFFFF' }}; hover:opacity: 0.9;">
+                            Export Text
+                        </a>
+                        <a href="{{ route('wishes.export.csv') }}" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest transition ease-in-out duration-150" style="background-color: {{ $activeTheme->getColors('primary') ?? '#002037' }}; color: {{ $activeTheme->getColors('background') ?? '#FFFFFF' }}; hover:opacity: 0.9;">
+                            Export CSV
+                        </a>
+                    </div>
                 @endif
             </div>
         </div>

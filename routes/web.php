@@ -21,6 +21,8 @@ Route::get('/dashboard', function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/wishes/reorder', [WishController::class, 'reorder'])->name('wishes.reorder');
     Route::get('/wishes/print', [WishController::class, 'print'])->name('wishes.print');
+    Route::get('/wishes/export/text', [WishController::class, 'exportText'])->name('wishes.export.text');
+    Route::get('/wishes/export/csv', [WishController::class, 'exportCsv'])->name('wishes.export.csv');
     Route::resource('wishes', WishController::class);
 });
 
