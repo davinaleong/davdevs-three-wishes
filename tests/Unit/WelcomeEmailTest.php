@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Mail;
 
 it('can create welcome email', function () {
     $user = User::factory()->create(['name' => 'John Doe']);
-    $theme = Theme::factory()->create(['year' => now()->year]);
+    $theme = Theme::factory()->create(['year' => now()->year, 'is_active' => true]);
 
     $email = new WelcomeEmail($user);
 
@@ -46,9 +46,9 @@ it('can be sent', function () {
     $user = User::factory()->create(['email' => 'test@example.com']);
     $email = new WelcomeEmail($user);
 
-    Mail::to($user->email)->send($email);
+    Mail::to($user->email)->queue($email);
 
-    Mail::assertSent(WelcomeEmail::class, function ($mail) use ($user) {
+    Mail::assertQueued(WelcomeEmail::class, function ($mail) use ($user) {
         return $mail->user->email === $user->email;
     });
 });

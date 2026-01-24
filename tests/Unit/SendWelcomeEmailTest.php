@@ -15,7 +15,7 @@ it('sends welcome email when user is verified', function () {
 
     $listener->handle($event);
 
-    Mail::assertSent(WelcomeEmail::class, function ($mail) use ($user) {
+    Mail::assertQueued(WelcomeEmail::class, function ($mail) use ($user) {
         return $mail->user->id === $user->id;
     });
 });
@@ -57,7 +57,7 @@ it('handles event with user email', function () {
 
     $listener->handle($event);
 
-    Mail::assertSent(WelcomeEmail::class, function ($mail) {
+    Mail::assertQueued(WelcomeEmail::class, function ($mail) {
         return $mail->hasTo('specific@example.com');
     });
 });

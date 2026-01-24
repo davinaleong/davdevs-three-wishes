@@ -61,9 +61,9 @@ it('can be sent', function () {
     $user = User::factory()->create(['email' => 'test@example.com']);
     $email = new AnnualWishReminder($user);
 
-    Mail::to($user->email)->send($email);
+    Mail::to($user->email)->queue($email);
 
-    Mail::assertSent(AnnualWishReminder::class, function ($mail) use ($user) {
+    Mail::assertQueued(AnnualWishReminder::class, function ($mail) use ($user) {
         return $mail->user->email === $user->email;
     });
 });

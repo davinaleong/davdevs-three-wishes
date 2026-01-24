@@ -9,11 +9,11 @@ it('can create user activity log', function () {
     $log = UserActivityLog::create([
         'user_id' => $user->id,
         'action' => 'test_action',
-        'meta_data' => ['key' => 'value'],
+        'meta' => ['key' => 'value'],
     ]);
 
     expect($log->action)->toBe('test_action')
-        ->and($log->meta_data)->toBe(['key' => 'value'])
+        ->and($log->meta)->toBe(['key' => 'value'])
         ->and($log->user_id)->toBe($user->id);
 });
 
@@ -42,18 +42,20 @@ it('can log activity using static method', function () {
         ->where('action', 'static_test')
         ->first();
     
-    expect($log->meta_data)->toBe(['data' => 'test']);
+    expect($log->meta)->toHaveKey('data', 'test')
+        ->and($log->meta)->toHaveKey('ip')
+        ->and($log->meta)->toHaveKey('user_agent');
 });
 
-it('casts meta_data as array', function () {
+it('casts meta as array', function () {
     $user = User::factory()->create();
     
     $log = UserActivityLog::create([
         'user_id' => $user->id,
         'action' => 'test',
-        'meta_data' => ['nested' => ['key' => 'value']],
+        'meta' => ['nested' => ['key' => 'value']],
     ]);
 
-    expect($log->meta_data)->toBeArray()
-        ->and($log->meta_data['nested']['key'])->toBe('value');
+    expect($log->meta)->toBeArray()
+        ->and($log->meta['nested']['key'])->toBe('value');
 });

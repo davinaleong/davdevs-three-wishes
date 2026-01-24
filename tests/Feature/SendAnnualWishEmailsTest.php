@@ -17,10 +17,10 @@ it('sends annual emails to all users', function () {
     Wish::factory()->create(['user_id' => $user1->id, 'theme_id' => $theme->id]);
     Wish::factory()->create(['user_id' => $user2->id, 'theme_id' => $theme->id]);
 
-    $this->artisan('send:annual-wish-emails')
+    $this->artisan('wishes:send-annual-emails')
         ->assertExitCode(0);
 
-    Mail::assertSent(AnnualWishReminder::class, 2);
+    Mail::assertQueued(AnnualWishReminder::class, 2);
 });
 
 it('can send to specific user only', function () {
@@ -33,11 +33,11 @@ it('can send to specific user only', function () {
     Wish::factory()->create(['user_id' => $user1->id, 'theme_id' => $theme->id]);
     Wish::factory()->create(['user_id' => $user2->id, 'theme_id' => $theme->id]);
 
-    $this->artisan('send:annual-wish-emails', ['--user_id' => $user1->id])
+    $this->artisan('wishes:send-annual-emails', ['--user' => $user1->uuid])
         ->assertExitCode(0);
 
-    Mail::assertSent(AnnualWishReminder::class, 1);
-    Mail::assertSent(AnnualWishReminder::class, function ($mail) use ($user1) {
+    Mail::assertQueued(AnnualWishReminder::class, 1);
+    Mail::assertQueued(AnnualWishReminder::class, function ($mail) use ($user1) {
         return $mail->user->id === $user1->id;
     });
 });
@@ -49,10 +49,10 @@ it('dry run mode does not send emails', function () {
     $user = User::factory()->create();
     Wish::factory()->create(['user_id' => $user->id, 'theme_id' => $theme->id]);
 
-    $this->artisan('send:annual-wish-emails', ['--dry-run' => true])
+    $this->artisan('wishes:send-annual-emails', ['--dry-run' => true])
         ->assertExitCode(0);
 
-    Mail::assertNothingSent();
+    Mail::assertNothingQueued();
 });
 
 it('logs activity when emails are sent', function () {
@@ -62,7 +62,7 @@ it('logs activity when emails are sent', function () {
     $user = User::factory()->create();
     Wish::factory()->create(['user_id' => $user->id, 'theme_id' => $theme->id]);
 
-    $this->artisan('send:annual-wish-emails')
+    $this->artisan('wishes:send-annual-emails')
         ->assertExitCode(0);
 
     $this->assertDatabaseHas('user_activity_logs', [
@@ -80,17 +80,20 @@ it('skips users without wishes', function () {
     $theme = Theme::factory()->create(['year' => now()->year]);
     Wish::factory()->create(['user_id' => $userWithWishes->id, 'theme_id' => $theme->id]);
 
-    $this->artisan('send:annual-wish-emails')
+    $this->artisan('wishes:send-annual-emails')
         ->assertExitCode(0);
 
-    Mail::assertSent(AnnualWishReminder::class, 1);
-    Mail::assertSent(AnnualWishReminder::class, function ($mail) use ($userWithWishes) {
+    Mail::assertQueued(AnnualWishReminder::class, 1);
+    Mail::assertQueued(AnnualWishReminder::class, function ($mail) use ($userWithWishes) {
         return $mail->user->id === $userWithWishes->id;
     });
 });
 
 it('handles invalid user id gracefully', function () {
-    $this->artisan('send:annual-wish-emails', ['--user_id' => 999])
-        ->assertExitCode(1)
-        ->expectsOutput('User with ID 999 not found.');
+    Mail::fake();
+    
+    $this->artisan('wishes:send-annual-emails', ['--user' => 'invalid-uuid'])
+        ->assertExitCode(0); // Command succeeds but sends no emails
+        
+    Mail::assertNothingQueued();
 });

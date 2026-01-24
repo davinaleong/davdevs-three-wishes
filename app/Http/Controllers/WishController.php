@@ -33,7 +33,8 @@ class WishController extends Controller
         
         $activeTheme = ThemeService::getActiveTheme() ?: ThemeService::getCurrentYearTheme();
         
-        $wishes = $user->wishesForTheme($activeTheme)->get();
+        // Get all wishes for the user, grouped by theme year
+        $wishes = $user->wishes()->with('theme')->get()->groupBy('theme.year')->sortKeysDesc();
         $canEdit = WishEditWindow::isOpen($activeTheme);
         $cutoffDescription = WishEditWindow::getClosingDescription($activeTheme);
         
@@ -202,18 +203,17 @@ class WishController extends Controller
         
         $request->validate([
             'wishes' => 'required|array',
-            'wishes.*.id' => 'required|exists:wishes,uuid',
-            'wishes.*.position' => 'required|integer|min:1|max:10',
+            'wishes.*' => 'required|exists:wishes,id',
         ]);
         
         DB::transaction(function () use ($request) {
-            foreach ($request->wishes as $wishData) {
-                $wish = Wish::where('uuid', $wishData['id'])
+            foreach ($request->wishes as $position => $wishId) {
+                $wish = Wish::where('id', $wishId)
                     ->where('user_id', Auth::id())
                     ->first();
                     
                 if ($wish) {
-                    $wish->update(['position' => $wishData['position']]);
+                    $wish->update(['position' => $position + 1]); // position is 1-based
                 }
             }
         });

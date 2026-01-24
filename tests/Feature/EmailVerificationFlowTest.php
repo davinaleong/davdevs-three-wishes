@@ -42,10 +42,10 @@ it('triggers welcome email after email verification', function () {
     // Visit verification URL
     $response = $this->actingAs($user)->get($verificationUrl);
     
-    $response->assertRedirect('/dashboard');
+    $response->assertRedirect('/dashboard?verified=1');
     
     // Should send welcome email after verification
-    Mail::assertSent(WelcomeEmail::class, function ($mail) use ($user) {
+    Mail::assertQueued(WelcomeEmail::class, function ($mail) use ($user) {
         return $mail->user->id === $user->id;
     });
 });
@@ -91,7 +91,7 @@ it('welcome email contains correct branding', function () {
     
     event(new \Illuminate\Auth\Events\Verified($user));
     
-    Mail::assertSent(WelcomeEmail::class, function ($mail) {
+    Mail::assertQueued(WelcomeEmail::class, function ($mail) {
         return str_contains($mail->envelope()->subject, 'Dav/Devs Three Wishes');
     });
 });

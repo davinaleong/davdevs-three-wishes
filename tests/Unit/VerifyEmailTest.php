@@ -13,7 +13,7 @@ it('can create verify email', function () {
 
     expect($email->user)->toBe($user)
         ->and($email->verificationUrl)->toBe($verificationUrl)
-        ->and($email->year)->toBe(now()->year);
+        ->and($email->year)->toBe((string)now()->year);
 });
 
 it('has correct subject line', function () {
@@ -51,9 +51,9 @@ it('can be sent', function () {
     $verificationUrl = 'https://example.com/verify/123';
     $email = new VerifyEmail($user, $verificationUrl);
 
-    Mail::to($user->email)->send($email);
+    Mail::to($user->email)->queue($email);
 
-    Mail::assertSent(VerifyEmail::class, function ($mail) use ($user) {
+    Mail::assertQueued(VerifyEmail::class, function ($mail) use ($user) {
         return $mail->user->email === $user->email;
     });
 });

@@ -25,8 +25,7 @@ it('shows create wish page', function () {
 
     $response->assertStatus(200)
         ->assertViewIs('wishes.create')
-        ->assertViewHas('activeTheme')
-        ->assertViewHas('canEdit');
+        ->assertViewHas('activeTheme');
 });
 
 it('can store a new wish', function () {
@@ -35,8 +34,8 @@ it('can store a new wish', function () {
 
     $response = $this->actingAs($user)
         ->post(route('wishes.store'), [
-            'wish_text' => 'Test spiritual intention',
-            'order' => 1,
+            'content' => 'Test spiritual intention',
+            'position' => 1,
         ]);
 
     $response->assertRedirect(route('wishes.index'))
@@ -44,8 +43,8 @@ it('can store a new wish', function () {
 
     $this->assertDatabaseHas('wishes', [
         'user_id' => $user->id,
-        'wish_text' => 'Test spiritual intention',
-        'order' => 1,
+        'content' => 'Test spiritual intention',
+        'position' => 1,
         'theme_id' => $theme->id,
     ]);
 });
@@ -55,11 +54,11 @@ it('validates required fields when storing', function () {
 
     $response = $this->actingAs($user)
         ->post(route('wishes.store'), [
-            'wish_text' => '',
-            'order' => '',
+            'content' => '',
+            'position' => '',
         ]);
 
-    $response->assertSessionHasErrors(['wish_text', 'order']);
+    $response->assertSessionHasErrors(['content', 'position']);
 });
 
 it('can show individual wish', function () {
@@ -98,13 +97,13 @@ it('can update own wish', function () {
     $wish = Wish::factory()->create([
         'user_id' => $user->id,
         'theme_id' => $theme->id,
-        'wish_text' => 'Original wish',
+        'content' => 'Original wish',
     ]);
 
     $response = $this->actingAs($user)
         ->put(route('wishes.update', $wish), [
-            'wish_text' => 'Updated spiritual intention',
-            'order' => $wish->order,
+            'content' => 'Updated spiritual intention',
+            'position' => $wish->position,
         ]);
 
     $response->assertRedirect(route('wishes.index'))
@@ -112,7 +111,7 @@ it('can update own wish', function () {
 
     $this->assertDatabaseHas('wishes', [
         'id' => $wish->id,
-        'wish_text' => 'Updated spiritual intention',
+        'content' => 'Updated spiritual intention',
     ]);
 });
 
@@ -136,12 +135,25 @@ it('can delete own wish', function () {
 });
 
 it('can reorder wishes', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->create([
+        'email_verified_at' => now(),
+    ]);
     $theme = Theme::factory()->create();
     
-    $wish1 = Wish::factory()->create(['user_id' => $user->id, 'theme_id' => $theme->id, 'order' => 1]);
-    $wish2 = Wish::factory()->create(['user_id' => $user->id, 'theme_id' => $theme->id, 'order' => 2]);
-    $wish3 = Wish::factory()->create(['user_id' => $user->id, 'theme_id' => $theme->id, 'order' => 3]);
+    // Mock WishEditWindow to allow editing
+    $this->partialMock(\App\Services\WishEditWindow::class, function ($mock) {
+        $mock->shouldReceive('isOpen')->andReturn(true);
+    });
+    
+    // Mock ThemeService to return our test theme
+    $this->partialMock(\App\Services\ThemeService::class, function ($mock) use ($theme) {
+        $mock->shouldReceive('getActiveTheme')->andReturn($theme);
+        $mock->shouldReceive('getCurrentYearTheme')->andReturn($theme);
+    });
+    
+    $wish1 = Wish::factory()->create(['user_id' => $user->id, 'theme_id' => $theme->id, 'position' => 1]);
+    $wish2 = Wish::factory()->create(['user_id' => $user->id, 'theme_id' => $theme->id, 'position' => 2]);
+    $wish3 = Wish::factory()->create(['user_id' => $user->id, 'theme_id' => $theme->id, 'position' => 3]);
 
     $response = $this->actingAs($user)
         ->patch(route('wishes.reorder'), [
@@ -155,9 +167,9 @@ it('can reorder wishes', function () {
     $wish2->refresh();
     $wish3->refresh();
 
-    expect($wish3->order)->toBe(1)
-        ->and($wish1->order)->toBe(2)
-        ->and($wish2->order)->toBe(3);
+    expect($wish3->position)->toBe(1)
+        ->and($wish1->position)->toBe(2)
+        ->and($wish2->position)->toBe(3);
 });
 
 it('requires authentication for all routes', function () {

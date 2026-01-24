@@ -53,12 +53,12 @@ it('can scope ordered wishes', function () {
     $user = User::factory()->create();
     $theme = Theme::factory()->create();
 
-    $wish3 = Wish::factory()->create(['order' => 3, 'user_id' => $user->id, 'theme_id' => $theme->id]);
-    $wish1 = Wish::factory()->create(['order' => 1, 'user_id' => $user->id, 'theme_id' => $theme->id]);
-    $wish2 = Wish::factory()->create(['order' => 2, 'user_id' => $user->id, 'theme_id' => $theme->id]);
+    $wish3 = Wish::factory()->create(['position' => 3, 'user_id' => $user->id, 'theme_id' => $theme->id]);
+    $wish1 = Wish::factory()->create(['position' => 1, 'user_id' => $user->id, 'theme_id' => $theme->id]);
+    $wish2 = Wish::factory()->create(['position' => 2, 'user_id' => $user->id, 'theme_id' => $theme->id]);
 
     $orderedWishes = Wish::ordered()->get();
 
-    expect($orderedWishes->first()->order)->toBe(1)
-        ->and($orderedWishes->last()->order)->toBe(3);
+    expect($orderedWishes->first()->position)->toBe(1)
+        ->and($orderedWishes->last()->position)->toBe(3);
 });

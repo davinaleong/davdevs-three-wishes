@@ -37,8 +37,8 @@ it('legal pages are publicly accessible', function () {
 it('contains required legal content in terms', function () {
     $response = $this->get(route('legal.terms'));
 
-    $response->assertSee('Service Description')
-        ->assertSee('User Rights')
+    $response->assertSee('Description of Service')
+        ->assertSee('User Accounts and Registration')
         ->assertSee('Privacy and Data Protection')
         ->assertSee('Intellectual Property')
         ->assertSee('Limitation of Liability')

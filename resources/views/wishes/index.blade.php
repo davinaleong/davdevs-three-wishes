@@ -49,13 +49,16 @@
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <div class="flex items-center justify-between">
                         <div>
+                            @php
+                                $totalWishes = $wishes->flatten()->count();
+                            @endphp
                             <p class="text-sm text-gray-600 dark:text-gray-400">
-                                You have <strong>{{ $wishes->count() }}</strong> of 10 possible wishes.
-                                @if($wishes->count() < 3)
-                                    <span class="text-amber-600 dark:text-amber-400">(Minimum 3 required)</span>
+                                You have <strong>{{ $totalWishes }}</strong> wishes total.
+                                @if($totalWishes < 3)
+                                    <span class="text-amber-600 dark:text-amber-400">(Minimum 3 required for {{ $activeTheme->year }})</span>
                                 @endif
                             </p>
-                            @if($canEdit && $wishes->count() < 10)
+                            @if($canEdit && $wishes->get($activeTheme->year, collect())->count() < 10)
                                 <a href="{{ route('wishes.create') }}" class="inline-flex items-center mt-3 px-4 py-2 bg-indigo-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-600 focus:bg-indigo-600 active:bg-indigo-700 transition ease-in-out duration-150">
                                     Add New Wish
                                 </a>
@@ -63,7 +66,10 @@
                         </div>
                         <div class="flex space-x-2">
                             @for($i = 1; $i <= 10; $i++)
-                                @if($wishes->where('position', $i)->first())
+                                @php
+                                    $activeThemeWishes = $wishes->get($activeTheme->year, collect());
+                                @endphp
+                                @if($activeThemeWishes->where('position', $i)->first())
                                     <div class="w-4 h-4 bg-indigo-500 rounded" title="Wish {{ $i }}"></div>
                                 @else
                                     <div class="w-4 h-4 bg-gray-300 dark:bg-gray-600 rounded" title="Empty slot {{ $i }}"></div>
@@ -75,46 +81,53 @@
             </div>
 
             <!-- Wishes List -->
-            @if($wishes->count() > 0)
-                <div class="grid gap-6 mb-4">
-                    @foreach($wishes as $wish)
-                        <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                            <div class="p-6">
-                                <div class="flex justify-between items-start">
-                                    <div class="flex-1">
-                                        <div class="flex items-center gap-2 mb-2">
-                                            <span class="inline-flex items-center justify-center w-8 h-8 rounded-full text-white font-semibold text-sm" style="background-color: var(--color-primary, #6366f1);">
-                                                {{ $wish->position }}
-                                            </span>
-                                            <span class="text-sm text-gray-500 dark:text-gray-400">
-                                                Wish #{{ $wish->position }}
-                                            </span>
+            @if($wishes->flatten()->count() > 0)
+                @foreach($wishes as $year => $yearWishes)
+                    <div class="mb-8">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+                            {{ $year }} Wishes
+                        </h3>
+                        <div class="grid gap-6">
+                            @foreach($yearWishes as $wish)
+                                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                                    <div class="p-6">
+                                        <div class="flex justify-between items-start">
+                                            <div class="flex-1">
+                                                <div class="flex items-center gap-2 mb-2">
+                                                    <span class="inline-flex items-center justify-center w-8 h-8 rounded-full text-white font-semibold text-sm" style="background-color: var(--color-primary, #6366f1);">
+                                                        {{ $wish->position }}
+                                                    </span>
+                                                    <span class="text-sm text-gray-500 dark:text-gray-400">
+                                                        Wish #{{ $wish->position }}
+                                                    </span>
+                                                </div>
+                                                <p class="text-gray-900 dark:text-gray-100 text-lg">
+                                                    {{ $wish->content }}
+                                                </p>
+                                            </div>
+                                            
+                                            @if($canEdit && $wish->theme_id === $activeTheme->id)
+                                                <div class="flex gap-2 space-x-2 ml-4">
+                                                    <a href="{{ route('wishes.edit', $wish) }}" class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300">
+                                                        Edit
+                                                    </a>
+                                                    <form method="POST" action="{{ route('wishes.destroy', $wish) }}" class="inline" 
+                                                          onsubmit="return confirm('Are you sure you want to delete this wish?')">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300">
+                                                            Delete
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            @endif
                                         </div>
-                                        <p class="text-gray-900 dark:text-gray-100 text-lg">
-                                            {{ $wish->content }}
-                                        </p>
                                     </div>
-                                    
-                                    @if($canEdit)
-                                        <div class="flex gap-2 space-x-2 ml-4">
-                                            <a href="{{ route('wishes.edit', $wish) }}" class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300">
-                                                Edit
-                                            </a>
-                                            <form method="POST" action="{{ route('wishes.destroy', $wish) }}" class="inline" 
-                                                  onsubmit="return confirm('Are you sure you want to delete this wish?')">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300">
-                                                    Delete
-                                                </button>
-                                            </form>
-                                        </div>
-                                    @endif
                                 </div>
-                            </div>
+                            @endforeach
                         </div>
-                    @endforeach
-                </div>
+                    </div>
+                @endforeach
             @else
                 <!-- Empty State -->
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-4">
