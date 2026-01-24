@@ -25,7 +25,7 @@ class ThemeSeeder extends Seeder
             'colors_json' => [
                 'primary'   => '#002037', // Navy
                 'secondary' => '#F8BE5D', // Gold
-                'accent'    => '#23D09F', // Cyan
+                'accent'    => '#237D9F', // Cyan
                 'background'=> '#FFFFFF', // White
                 'text'      => '#000000', // Black
                 'muted'     => '#EEEEEE', // Gray

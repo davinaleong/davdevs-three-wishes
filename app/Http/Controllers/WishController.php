@@ -220,4 +220,21 @@ class WishController extends Controller
         
         return response()->json(['success' => true]);
     }
+
+    /**
+     * Generate a wish card for printing
+     */
+    public function card(Request $request)
+    {
+        $activeTheme = ThemeService::getActiveTheme() ?: ThemeService::getCurrentYearTheme();
+        
+        $wishes = Wish::where('user_id', Auth::id())
+            ->where('theme_id', $activeTheme->id)
+            ->ordered()
+            ->get();
+            
+        $layout = $request->get('layout', 'portrait-a4'); // Default layout
+        
+        return view('wishes.card', compact('wishes', 'activeTheme', 'layout'));
+    }
 }

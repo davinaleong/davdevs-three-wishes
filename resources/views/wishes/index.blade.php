@@ -9,11 +9,21 @@
                     {{ $cutoffDescription }}
                 </p>
             </div>
-            @if($canEdit && $wishes->count() < 10)
-                <a href="{{ route('wishes.create') }}" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest transition ease-in-out duration-150" style="background-color: #2b7fff; hover:background-color: #1447e6; focus:background-color: #1447e6; active:background-color: #1447e6;">
-                    Add New Wish
-                </a>
-            @endif
+            <div class="flex gap-3">
+                @if($canEdit && $wishes->count() < 10)
+                    <a href="{{ route('wishes.create') }}" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest transition ease-in-out duration-150" style="background-color: #2b7fff; hover:background-color: #1447e6; focus:background-color: #1447e6; active:background-color: #1447e6;">
+                        Add New Wish
+                    </a>
+                @endif
+                @php
+                    $currentYearWishes = $wishes->get($activeTheme->year, collect());
+                @endphp
+                @if($currentYearWishes->count() > 0)
+                    <a href="{{ route('wishes.card') }}" target="_blank" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest transition ease-in-out duration-150" style="background-color: {{ $activeTheme->getColors('secondary') ?? '#F8BE5D' }}; color: {{ $activeTheme->getColors('primary') ?? '#002037' }}; hover:opacity: 0.9;">
+                        Print Card
+                    </a>
+                @endif
+            </div>
         </div>
     </x-slot>
 

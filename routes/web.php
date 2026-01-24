@@ -35,6 +35,7 @@ Route::get('/test', function () {
 // Wish routes - protected by auth and verified middleware
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/wishes/reorder', [WishController::class, 'reorder'])->name('wishes.reorder');
+    Route::get('/wishes/card', [WishController::class, 'card'])->name('wishes.card');
     Route::resource('wishes', WishController::class);
 });
 
