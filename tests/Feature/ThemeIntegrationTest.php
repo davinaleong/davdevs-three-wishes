@@ -70,8 +70,8 @@ it('uses current year theme for new wishes', function () {
 it('shows wishes grouped by theme year', function () {
     $user = User::factory()->create();
     
-    $theme2026 = Theme::factory()->create(['year' => 2026]);
-    $theme2025 = Theme::factory()->create(['year' => 2025]);
+    $theme2026 = Theme::factory()->create(['year' => 2026, 'is_active' => true]);
+    $theme2025 = Theme::factory()->create(['year' => 2025, 'is_active' => false]);
     
     $wish2026 = Wish::factory()->create([
         'user_id' => $user->id,
@@ -89,7 +89,7 @@ it('shows wishes grouped by theme year', function () {
 
     $response->assertStatus(200)
         ->assertSee('2026 wish')
-        ->assertSee('2025 wish');
+        ->assertDontSee('2025 wish'); // Only current year wishes are shown
 });
 
 it('theme service provides css variables', function () {

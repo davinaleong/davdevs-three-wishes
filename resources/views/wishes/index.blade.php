@@ -50,10 +50,11 @@
                     <div class="flex items-center justify-between">
                         <div>
                             @php
-                                $totalWishes = $wishes->flatten()->count();
+                                $currentYearWishes = $wishes->get($activeTheme->year, collect());
+                                $totalWishes = $currentYearWishes->count();
                             @endphp
                             <p class="text-sm text-gray-600 dark:text-gray-400">
-                                You have <strong>{{ $totalWishes }}</strong> wishes total.
+                                You have <strong>{{ $totalWishes }}</strong> wishes for {{ $activeTheme->year }}.
                                 @if($totalWishes < 3)
                                     <span class="text-amber-600 dark:text-amber-400">(Minimum 3 required for {{ $activeTheme->year }})</span>
                                 @endif
@@ -81,53 +82,54 @@
             </div>
 
             <!-- Wishes List -->
-            @if($wishes->flatten()->count() > 0)
-                @foreach($wishes as $year => $yearWishes)
-                    <div class="mb-8">
-                        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
-                            {{ $year }} Wishes
-                        </h3>
-                        <div class="grid gap-6">
-                            @foreach($yearWishes as $wish)
-                                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                                    <div class="p-6">
-                                        <div class="flex justify-between items-start">
-                                            <div class="flex-1">
-                                                <div class="flex items-center gap-2 mb-2">
-                                                    <span class="inline-flex items-center justify-center w-8 h-8 rounded-full text-white font-semibold text-sm" style="background-color: var(--color-primary, #6366f1);">
-                                                        {{ $wish->position }}
-                                                    </span>
-                                                    <span class="text-sm text-gray-500 dark:text-gray-400">
-                                                        Wish #{{ $wish->position }}
-                                                    </span>
-                                                </div>
-                                                <p class="text-gray-900 dark:text-gray-100 text-lg">
-                                                    {{ $wish->content }}
-                                                </p>
+            @php
+                $currentYearWishes = $wishes->get($activeTheme->year, collect());
+            @endphp
+            @if($currentYearWishes->count() > 0)
+                <div class="mb-8">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+                        {{ $activeTheme->year }} Wishes
+                    </h3>
+                    <div class="grid gap-6">
+                        @foreach($currentYearWishes as $wish)
+                            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                                <div class="p-6">
+                                    <div class="flex justify-between items-start">
+                                        <div class="flex-1">
+                                            <div class="flex items-center gap-2 mb-2">
+                                                <span class="inline-flex items-center justify-center w-8 h-8 rounded-full text-white font-semibold text-sm" style="background-color: var(--color-primary, #6366f1);">
+                                                    {{ $wish->position }}
+                                                </span>
+                                                <span class="text-sm text-gray-500 dark:text-gray-400">
+                                                    Wish #{{ $wish->position }}
+                                                </span>
                                             </div>
-                                            
-                                            @if($canEdit && $wish->theme_id === $activeTheme->id)
-                                                <div class="flex gap-2 space-x-2 ml-4">
-                                                    <a href="{{ route('wishes.edit', $wish) }}" class="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300">
-                                                        Edit
-                                                    </a>
-                                                    <form method="POST" action="{{ route('wishes.destroy', $wish) }}" class="inline" 
-                                                          onsubmit="return confirm('Are you sure you want to delete this wish?')">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300">
-                                                            Delete
-                                                        </button>
-                                                    </form>
-                                                </div>
-                                            @endif
+                                            <p class="text-gray-900 dark:text-gray-100 text-lg">
+                                                {{ $wish->content }}
+                                            </p>
                                         </div>
+                                        
+                                        @if($canEdit && $wish->theme_id === $activeTheme->id)
+                                            <div class="flex gap-2 space-x-2 ml-4">
+                                                <a href="{{ route('wishes.edit', $wish) }}" class="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300">
+                                                    Edit
+                                                </a>
+                                                <form method="POST" action="{{ route('wishes.destroy', $wish) }}" class="inline" 
+                                                      onsubmit="return confirm('Are you sure you want to delete this wish?')">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300">
+                                                        Delete
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
-                            @endforeach
-                        </div>
+                            </div>
+                        @endforeach
                     </div>
-                @endforeach
+                </div>
             @else
                 <!-- Empty State -->
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-4">
@@ -149,15 +151,15 @@
             @endif
 
             <!-- Theme Info -->
-            <div class="mt-8 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="mt-8 overflow-hidden shadow-sm sm:rounded-lg" style="background: linear-gradient(to bottom right, {{ $activeTheme->getColors('accent') ?? '#23D09F' }}, {{ $activeTheme->getColors('primary') ?? '#002037' }});">
                 <div class="p-6">
-                    <h3 class="font-semibold text-lg text-gray-900 dark:text-gray-100 mb-4">
+                    <h3 class="font-semibold text-lg mb-4" style="color: {{ $activeTheme->getColors('secondary') ?? '#F8BE5D' }};">
                         {{ $activeTheme->theme_title }} Theme
                     </h3>
-                    <blockquote class="italic text-gray-700 dark:text-gray-300 mb-2">
+                    <blockquote class="italic mb-2" style="color: {{ $activeTheme->getColors('text') ?? '#FFFFFF' }};">
                         "{{ $activeTheme->theme_verse_text }}"
                     </blockquote>
-                    <cite class="text-sm text-gray-500 dark:text-gray-400">
+                    <cite class="text-sm" style="color: {{ $activeTheme->getColors('text') ?? '#FFFFFF' }};">
                         — {{ $activeTheme->theme_verse_reference }}
                     </cite>
                 </div>
