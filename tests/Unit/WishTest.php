@@ -36,8 +36,8 @@ it('belongs to user and theme', function () {
 });
 
 it('can scope for theme', function () {
-    $theme1 = Theme::factory()->create();
-    $theme2 = Theme::factory()->create();
+    $theme1 = Theme::factory()->create(['year' => 2025]);
+    $theme2 = Theme::factory()->create(['year' => 2026]);
     $user = User::factory()->create();
 
     $wish1 = Wish::factory()->create(['theme_id' => $theme1->id, 'user_id' => $user->id]);

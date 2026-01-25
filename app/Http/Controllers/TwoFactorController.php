@@ -129,9 +129,11 @@ class TwoFactorController extends Controller
             'user_agent' => $request->userAgent()
         ]);
         
+        session()->flash('success', 'Recovery codes regenerated successfully.');
+        
         return view('profile.two-factor.recovery-codes', [
             'recoveryCodes' => $recoveryCodes
-        ])->with('success', 'Recovery codes regenerated successfully.');
+        ]);
     }
 
     public function disable(Request $request)

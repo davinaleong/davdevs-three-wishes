@@ -12,7 +12,7 @@
                     <div>
                         <h1 class="text-2xl font-bold">Wish #{{ $wish->position }}</h1>
                         <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                            {{ $wish->theme->name }} ({{ $wish->theme->year }})
+                            {{ $wish->theme->theme_title }} ({{ $wish->theme->year }})
                         </p>
                     </div>
                     
@@ -51,3 +51,4 @@
             </div>
         </div>
     </div>
+</x-app-layout>

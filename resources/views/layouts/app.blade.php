@@ -46,8 +46,8 @@
                             </a>
                             <a href="{{ route('legal.privacy') }}" class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors">
                                 Privacy Policy
-                            {{-- </a>
-                            <a href="mailto:support@gracesoft.dev" class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors">
+                            </a>
+                            {{-- <a href="mailto:support@gracesoft.dev" class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors">
                                 Contact Us
                             </a> --}}
                         </div>
