@@ -10,89 +10,87 @@
         {!! $themeCssVariables ?? '' !!}
     </style>
 
-    <div class="py-12">
-        <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <form method="POST" action="{{ route('wishes.update', $wish) }}">
-                        @csrf
-                        @method('PATCH')
+    <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
+        <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="p-6 text-gray-900 dark:text-gray-100">
+                <form method="POST" action="{{ route('wishes.update', $wish) }}">
+                    @csrf
+                    @method('PATCH')
+                    
+                    <!-- Position Selection -->
+                    <div class="mb-6">
+                        <label for="position" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Position
+                        </label>
+                        <select id="position" 
+                                name="position" 
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300" 
+                                required>
+                            @for($i = 1; $i <= 10; $i++)
+                                <option value="{{ $i }}" {{ old('position', $wish->position) == $i ? 'selected' : '' }}>
+                                    Position {{ $i }}
+                                </option>
+                            @endfor
+                        </select>
                         
-                        <!-- Position Selection -->
-                        <div class="mb-6">
-                            <label for="position" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Position
-                            </label>
-                            <select id="position" 
-                                    name="position" 
-                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300" 
-                                    required>
-                                @for($i = 1; $i <= 10; $i++)
-                                    <option value="{{ $i }}" {{ old('position', $wish->position) == $i ? 'selected' : '' }}>
-                                        Position {{ $i }}
-                                    </option>
-                                @endfor
-                            </select>
-                            
-                            @error('position')
-                                <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                            @enderror
-                        </div>
+                        @error('position')
+                            <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    
+                    <!-- Wish Content -->
+                    <div class="mb-6">
+                        <label for="content" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Your Wish
+                        </label>
+                        <textarea id="content" 
+                                name="content" 
+                                rows="4" 
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300" 
+                                placeholder="Enter your wish here..."
+                                maxlength="1000"
+                                required>{{ old('content', $wish->content) }}</textarea>
                         
-                        <!-- Wish Content -->
-                        <div class="mb-6">
-                            <label for="content" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Your Wish
-                            </label>
-                            <textarea id="content" 
-                                    name="content" 
-                                    rows="4" 
-                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300" 
-                                    placeholder="Enter your wish here..."
-                                    maxlength="1000"
-                                    required>{{ old('content', $wish->content) }}</textarea>
-                            
-                            @error('content')
-                                <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                            @enderror
-                            
-                            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                                Maximum 1000 characters
-                            </p>
-                        </div>
+                        @error('content')
+                            <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                        @enderror
+                        
+                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                            Maximum 1000 characters
+                        </p>
+                    </div>
 
-                        <!-- Character Counter -->
-                        <div class="mb-6">
-                            <div class="flex justify-between text-sm text-gray-500 dark:text-gray-400">
-                                <span>Characters used:</span>
-                                <span id="charCount">0/1000</span>
-                            </div>
-                            <div class="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
-                                <div id="charBar" class="h-2 rounded-full transition-all duration-300" style="background-color: var(--color-primary, #6366f1); width: 0%"></div>
-                            </div>
+                    <!-- Character Counter -->
+                    <div class="mb-6">
+                        <div class="flex justify-between text-sm text-gray-500 dark:text-gray-400">
+                            <span>Characters used:</span>
+                            <span id="charCount">0/1000</span>
                         </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
+                            <div id="charBar" class="h-2 rounded-full transition-all duration-300" style="background-color: var(--color-primary, #6366f1); width: 0%"></div>
+                        </div>
+                    </div>
 
-                        <!-- Wish History -->
-                        <div class="mb-6 text-xs text-gray-500 dark:text-gray-400">
-                            <p>
-                                Created: {{ $wish->created_at->format('M j, Y g:i A') }}
-                                @if($wish->updated_at != $wish->created_at)
-                                    • Last updated: {{ $wish->updated_at->format('M j, Y g:i A') }}
-                                @endif
-                            </p>
-                        </div>
+                    <!-- Wish History -->
+                    <div class="mb-6 text-xs text-gray-500 dark:text-gray-400">
+                        <p>
+                            Created: {{ $wish->created_at->format('M j, Y g:i A') }}
+                            @if($wish->updated_at != $wish->created_at)
+                                • Last updated: {{ $wish->updated_at->format('M j, Y g:i A') }}
+                            @endif
+                        </p>
+                    </div>
 
-                        <!-- Form Actions -->
-                        <div class="flex items-center justify-end space-x-4">
-                            <a href="{{ route('wishes.index') }}" class="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200">
-                                Cancel
-                            </a>
-                            <button type="submit" class="px-6 py-2 bg-blue-500 text-white font-semibold rounded-md shadow-sm hover:bg-blue-600 focus:bg-blue-600 active:bg-blue-700 transition-colors duration-150">
-                                Update Wish
-                            </button>
-                        </div>
-                    </form>
-                </div>
+                    <!-- Form Actions -->
+                    <div class="flex items-center justify-end space-x-4">
+                        <a href="{{ route('wishes.index') }}" class="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200">
+                            Cancel
+                        </a>
+                        <button type="submit" class="px-6 py-2 bg-blue-500 text-white font-semibold rounded-md shadow-sm hover:bg-blue-600 focus:bg-blue-600 active:bg-blue-700 transition-colors duration-150">
+                            Update Wish
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

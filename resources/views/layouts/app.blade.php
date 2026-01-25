@@ -28,7 +28,7 @@
             @endisset
 
             <!-- Page Content -->
-            <main>
+            <main style="min-height: calc(100vh - 227px);">
                 {{ $slot }}
             </main>
             

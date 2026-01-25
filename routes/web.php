@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WishController;
 use App\Http\Controllers\LegalController;
+use App\Http\Controllers\TwoFactorController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -16,6 +17,20 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return redirect()->route('wishes.index');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+// Two-Factor Authentication routes
+Route::middleware('auth')->group(function () {
+    Route::get('/two-factor/challenge', [TwoFactorController::class, 'challenge'])->name('two-factor.challenge');
+    Route::post('/two-factor/verify', [TwoFactorController::class, 'verify'])->name('two-factor.verify');
+    
+    Route::middleware('verified')->group(function () {
+        Route::post('/two-factor/enable', [TwoFactorController::class, 'enable'])->name('two-factor.enable');
+        Route::post('/two-factor/confirm', [TwoFactorController::class, 'confirm'])->name('two-factor.confirm');
+        Route::get('/two-factor/recovery-codes', [TwoFactorController::class, 'showRecoveryCodes'])->name('two-factor.recovery-codes');
+        Route::post('/two-factor/regenerate-codes', [TwoFactorController::class, 'regenerateRecoveryCodes'])->name('two-factor.regenerate-codes');
+        Route::delete('/two-factor/disable', [TwoFactorController::class, 'disable'])->name('two-factor.disable');
+    });
+});
 
 // Wish routes - protected by auth and verified middleware
 Route::middleware(['auth', 'verified'])->group(function () {

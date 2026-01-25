@@ -18,6 +18,11 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web(append: [
             \App\Http\Middleware\ShareActiveTheme::class,
         ]);
+        
+        // Register named middleware
+        $middleware->alias([
+            'two-factor' => \App\Http\Middleware\TwoFactorMiddleware::class,
+        ]);
     })
     ->withSchedule(function (Schedule $schedule): void {
         // Check daily if it's December 31st and send annual wish emails
