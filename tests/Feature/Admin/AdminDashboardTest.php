@@ -82,11 +82,16 @@ class AdminDashboardTest extends TestCase
 
     public function test_admin_dashboard_logs_access()
     {
-        $this->actingAs($this->admin, 'admin')
+        $response = $this->actingAs($this->admin, 'admin')
             ->get('/admin/dashboard');
 
-        // Note: Dashboard controller doesn't currently log access
-        // This would need to be implemented in the controller
+        $response->assertStatus(200);
+        
+        // Verify that dashboard access was logged
+        $this->assertDatabaseHas('admin_activity_logs', [
+            'admin_id' => $this->admin->id,
+            'action' => 'ADMIN_DASHBOARD_VIEWED',
+        ]);
     }
 
     public function test_admin_dashboard_has_quick_action_links()

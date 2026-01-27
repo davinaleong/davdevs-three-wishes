@@ -15,6 +15,9 @@ class DashboardController extends Controller
 {
     public function index(): View
     {
+        // Log dashboard access
+        auth('admin')->user()->logActivity('ADMIN_DASHBOARD_VIEWED');
+
         $stats = [
             'total_users' => User::count(),
             'verified_users' => User::whereNotNull('email_verified_at')->count(),
