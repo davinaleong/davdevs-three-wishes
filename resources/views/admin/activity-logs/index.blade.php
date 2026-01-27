@@ -21,7 +21,7 @@
                         <div class="print:hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                             <div>
                                 <label for="action" class="block text-sm font-medium text-gray-700">Action</label>
-                                <select name="action" id="action" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                                <select name="action" id="action" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500">
                                     <option value="">All Actions</option>
                                     @foreach($actions as $action)
                                         <option value="{{ $action }}" {{ request('action') === $action ? 'selected' : '' }}>
@@ -35,24 +35,24 @@
                                 <label for="admin" class="block text-sm font-medium text-gray-700">Admin Email</label>
                                 <input type="text" name="admin" id="admin" value="{{ request('admin') }}" 
                                         placeholder="Search by email..."
-                                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500">
                             </div>
 
                             <div>
                                 <label for="date_from" class="block text-sm font-medium text-gray-700">From Date</label>
                                 <input type="date" name="date_from" id="date_from" value="{{ request('date_from') }}"
-                                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500">
                             </div>
 
                             <div>
                                 <label for="date_to" class="block text-sm font-medium text-gray-700">To Date</label>
                                 <input type="date" name="date_to" id="date_to" value="{{ request('date_to') }}"
-                                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500">
                             </div>
                         </div>
 
                         <div class="flex space-x-3 no-print">
-                            <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm font-medium">
+                            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium">
                                 Filter
                             </button>
                             <a href="{{ route('admin.activity-logs.index') }}" class="bg-gray-300 hover:bg-gray-400 text-gray-700 px-4 py-2 rounded-md text-sm font-medium">

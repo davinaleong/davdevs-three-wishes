@@ -85,7 +85,7 @@
                 <div class="p-6">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
-                            <div class="w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center">
+                            <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
                                 <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
                                     <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z"></path>
                                 </svg>
@@ -118,7 +118,7 @@
                     </div>
                     <div class="text-right">
                         <a href="{{ route('admin.themes.show', $activeTheme) }}" 
-                           class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 transition ease-in-out duration-150">
+                           class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 transition ease-in-out duration-150">
                             Manage Theme
                         </a>
                     </div>
@@ -164,7 +164,7 @@
                 <div class="p-6">
                     <div class="flex items-center justify-between mb-4">
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Recent User Activity</h3>
-                        <a href="{{ route('admin.activity-logs.index') }}" class="text-sm text-indigo-600 hover:text-indigo-500">View all</a>
+                        <a href="{{ route('admin.activity-logs.index') }}" class="text-sm text-blue-600 hover:text-blue-500">View all</a>
                     </div>
                     
                     @if($recentUserActivity->count() > 0)
@@ -198,7 +198,7 @@
                 <div class="p-6">
                     <div class="flex items-center justify-between mb-4">
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Recent Admin Activity</h3>
-                        <a href="{{ route('admin.activity-logs.index') }}" class="text-sm text-indigo-600 hover:text-indigo-500">View all</a>
+                        <a href="{{ route('admin.activity-logs.index') }}" class="text-sm text-blue-600 hover:text-blue-500">View all</a>
                     </div>
                     
                     @if($recentAdminActivity->count() > 0)
@@ -206,7 +206,7 @@
                             @foreach($recentAdminActivity as $log)
                                 <div class="flex items-center space-x-3">
                                     <div class="flex-shrink-0">
-                                        <div class="w-2 h-2 bg-indigo-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
                                     </div>
                                     <div class="flex-1 min-w-0">
                                         <p class="text-sm text-gray-500 dark:text-gray-400">

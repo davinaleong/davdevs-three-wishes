@@ -20,7 +20,7 @@
                             <!-- Logo -->
                             <div class="shrink-0 flex items-center">
                                 <a href="{{ route('admin.dashboard') }}" class="flex items-center">
-                                    <span class="text-xl font-bold text-indigo-600">Admin Panel</span>
+                                    <span class="text-xl font-bold text-blue-600">Admin Panel</span>
                                 </a>
                             </div>
 
