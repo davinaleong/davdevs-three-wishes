@@ -75,11 +75,26 @@
                                         <x-icon name="plus" class="w-4 h-4 mr-1" />Add Color
                                     </button>
                                 </div>
+                                @php
+                                    $colorsForInput = old('colors_json');
+
+                                    if (is_string($colorsForInput)) {
+                                        $try = json_decode($colorsForInput, true);
+                                        if (is_array($try)) {
+                                            $colorsForInput = $try;
+                                        }
+                                    }
+
+                                    if (!is_array($colorsForInput)) {
+                                        $colorsForInput = $theme->colors_json ?? [];
+                                    }
+                                @endphp
+
                                 <input
                                     type="hidden"
                                     name="colors_json"
                                     id="colors_json_input"
-                                    value='@json(old("colors_json", $theme->colors_json))'
+                                    value='{{ json_encode($colorsForInput) }}'
                                 >
 
                                 @error('colors_json')

@@ -71,7 +71,35 @@
                                         <x-icon name="plus" class="w-4 h-4 mr-1" />Add Color
                                     </button>
                                 </div>
-                                <input type="hidden" name="colors_json" id="colors_json_input" value='{{ old('colors_json', '{"text": "#000000", "muted": "#EEEEEE", "accent": "#237D9F", "primary": "#002037", "secondary": "#F8BE5D", "background": "#FFFFFF"}') }}'>
+                                @php
+                                    $colorsForInput = old('colors_json');
+
+                                    if (is_string($colorsForInput)) {
+                                        $try = json_decode($colorsForInput, true);
+                                        if (is_array($try)) {
+                                            $colorsForInput = $try;
+                                        }
+                                    }
+
+                                    if (!is_array($colorsForInput)) {
+                                        $colorsForInput = [
+                                            "text" => "#000000",
+                                            "muted" => "#EEEEEE",
+                                            "accent" => "#237D9F",
+                                            "primary" => "#002037",
+                                            "secondary" => "#F8BE5D",
+                                            "background" => "#FFFFFF",
+                                        ];
+                                    }
+                                @endphp
+
+                                <input
+                                    type="hidden"
+                                    name="colors_json"
+                                    id="colors_json_input"
+                                    value='{{ json_encode($colorsForInput) }}'
+                                >
+
                                 @error('colors_json')
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                 @enderror

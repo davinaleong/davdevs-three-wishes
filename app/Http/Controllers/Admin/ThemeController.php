@@ -41,11 +41,24 @@ class ThemeController extends Controller
             'theme_verse_text' => 'required|string',
             'logo' => 'nullable|image|max:2048',
             'favicon' => 'nullable|image|max:512',
-            'colors_json' => 'required|json',
-            'email_styles_json' => 'nullable|json',
+            'colors_json' => ['required', 'string', function ($attribute, $value, $fail) {
+                $decoded = json_decode($value, true);
+                if (!is_array($decoded)) {
+                    $fail('Theme colors must be a JSON object (e.g. {"text":"#000000"}).');
+                }
+            }],
+            'email_styles_json' => ['nullable', 'string', function ($attribute, $value, $fail) {
+                if ($value === null || trim($value) === '') return;
+                $decoded = json_decode($value, true);
+                if (!is_array($decoded)) {
+                    $fail('Email styles must be a JSON object.');
+                }
+            }],
         ]);
 
         $data = $request->all();
+        $data['colors_json'] = $this->decodeJsonObjectStringToArray($request->input('colors_json')) ?? [];
+        $data['email_styles_json'] = $this->decodeJsonObjectStringToArray($request->input('email_styles_json'));
         
         if ($request->hasFile('logo')) {
             $data['logo_path'] = $request->file('logo')->store('themes/logos', 'public');
@@ -79,11 +92,25 @@ class ThemeController extends Controller
             'theme_verse_text' => 'required|string',
             'logo' => 'nullable|image|max:2048',
             'favicon' => 'nullable|image|max:512',
-            'colors_json' => 'required|json',
-            'email_styles_json' => 'nullable|json',
+            'colors_json' => ['required', 'string', function ($attribute, $value, $fail) {
+                $decoded = json_decode($value, true);
+                if (!is_array($decoded)) {
+                    $fail('Theme colors must be a JSON object (e.g. {"text":"#000000"}).');
+                }
+            }],
+            'email_styles_json' => ['nullable', 'string', function ($attribute, $value, $fail) {
+                if ($value === null || trim($value) === '') return;
+                $decoded = json_decode($value, true);
+                if (!is_array($decoded)) {
+                    $fail('Email styles must be a JSON object.');
+                }
+            }],
+
         ]);
 
         $data = $request->except(['logo', 'favicon']);
+        $data['colors_json'] = $this->decodeJsonObjectStringToArray($request->input('colors_json')) ?? [];
+        $data['email_styles_json'] = $this->decodeJsonObjectStringToArray($request->input('email_styles_json'));
         
         if ($request->hasFile('logo')) {
             if ($theme->logo_path) {
@@ -162,4 +189,21 @@ class ThemeController extends Controller
         return redirect()->route('admin.themes.index')
             ->with('success', 'Theme deleted successfully (including all associated data).');
     }
+
+    private function decodeJsonObjectStringToArray(?string $value): ?array
+    {
+        if ($value === null || trim($value) === '') {
+            return null;
+        }
+
+        $decoded = json_decode($value, true);
+
+        // If the decoded value is a string, it was double-encoded JSON. Decode again.
+        if (is_string($decoded)) {
+            $decoded = json_decode($decoded, true);
+        }
+
+        return is_array($decoded) ? $decoded : null;
+    }
+
 }
