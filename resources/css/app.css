@@ -1,3 +1,105 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@media print {
+    /* Hide non-essential elements */
+    .no-print { display: none; }
+    
+    /* Reset page margins and styling */
+    * { 
+        -webkit-print-color-adjust: exact;
+        color-adjust: exact;
+    }
+    
+    body { 
+        margin: 0; 
+        padding: 10px;
+        font-family: Arial, sans-serif;
+        font-size: 10px;
+        color: black;
+        background: white;
+    }
+    
+    /* Show main containers */
+    .py-12, .max-w-7xl, .bg-white, .p-6 { 
+        all: unset;
+        display: block;
+        width: 100%;
+    }
+    
+    /* Title styling */
+    h2 { 
+        font-size: 16px; 
+        font-weight: bold; 
+        margin: 0 0 15px 0; 
+        color: black;
+        text-align: center;
+        display: block;
+    }
+    
+    /* Table container */
+    .overflow-x-auto {
+        overflow: visible;
+        display: block;
+    }
+    
+    /* Table styling */
+    .print-table { 
+        width: 100%;
+        border-collapse: collapse;
+        margin: 0;
+        font-size: 9px;
+        display: table;
+    }
+    
+    .print-table thead {
+        display: table-header-group;
+    }
+    
+    .print-table tbody {
+        display: table-row-group;
+    }
+    
+    .print-table tr {
+        display: table-row;
+        background: white;
+        page-break-inside: avoid;
+    }
+    
+    .print-table th, .print-table td { 
+        display: table-cell;
+        padding: 3px 4px;
+        border: 1px solid black;
+        vertical-align: top;
+        line-height: 1.2;
+    }
+    
+    .print-table th { 
+        background: white;
+        color: black;
+        font-weight: bold;
+        text-align: left;
+        font-size: 9px;
+    }
+    
+    /* Simplify content */
+    .print-table .inline-flex {
+        display: inline;
+        background: none;
+        color: black;
+        font-weight: normal;
+        padding: 0;
+        border-radius: 0;
+    }
+    
+    /* Make text visible */
+    .text-sm, .text-xs {
+        color: black;
+        font-size: 9px;
+    }
+    
+    .text-gray-500, .text-gray-900 {
+        color: black;
+    }
+}

@@ -39,4 +39,5 @@ Route::middleware(['admin'])->prefix('admin')->name('admin.')->group(function ()
     
     // Activity logs
     Route::get('activity-logs', [ActivityLogController::class, 'index'])->name('activity-logs.index');
+    Route::get('activity-logs/export', [ActivityLogController::class, 'export'])->name('activity-logs.export');
 });
