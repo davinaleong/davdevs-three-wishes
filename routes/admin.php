@@ -25,10 +25,7 @@ Route::middleware(['admin'])->prefix('admin')->name('admin.')->group(function ()
     Route::resource('themes', ThemeController::class);
     Route::post('themes/{theme}/activate', [ThemeController::class, 'activate'])->name('themes.activate');
     
-    // User management
-    Route::get('users', [UserController::class, 'index'])->name('users.index');
-    Route::get('users/{user}', [UserController::class, 'show'])->name('users.show');
-    Route::get('users/{user}/activity', [UserController::class, 'activityLogs'])->name('users.activity');
+    // User email management only
     Route::post('users/{user}/resend-verification', [UserController::class, 'resendVerification'])->name('users.resend-verification');
     Route::post('users/{user}/send-year-end', [UserController::class, 'sendYearEndWishes'])->name('users.send-year-end');
     

@@ -41,10 +41,14 @@
                                                 @unless($theme->is_active)
                                                     <form action="{{ route('admin.themes.activate', $theme) }}" method="POST" class="inline">
                                                         @csrf
-                                                        @method('PATCH')
                                                         <button type="submit" class="text-green-600 hover:text-green-900">Activate</button>
                                                     </form>
                                                 @endunless
+                                                <form action="{{ route('admin.themes.destroy', $theme) }}" method="POST" class="inline" onsubmit="return confirm('Are you sure you want to delete this theme? This will permanently delete the theme and all associated data including wishes.')">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="text-red-600 hover:text-red-900">Delete</button>
+                                                </form>
                                             </div>
                                         </td>
                                     </tr>

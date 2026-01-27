@@ -9,6 +9,17 @@
                         <h2 class="text-2xl font-bold text-gray-900">{{ $theme->theme_title }}</h2>
                         <div class="flex space-x-2">
                             <a href="{{ route('admin.themes.edit', $theme) }}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Edit</a>
+                            @unless($theme->is_active)
+                                <form action="{{ route('admin.themes.activate', $theme) }}" method="POST" class="inline">
+                                    @csrf
+                                    <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Activate</button>
+                                </form>
+                            @endunless
+                            <form action="{{ route('admin.themes.destroy', $theme) }}" method="POST" class="inline" onsubmit="return confirm('Are you sure you want to delete this theme? This will permanently delete the theme and all associated data including wishes.')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Delete</button>
+                            </form>
                             <a href="{{ route('admin.themes.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Back</a>
                         </div>
                     </div>

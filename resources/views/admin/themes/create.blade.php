@@ -60,6 +60,23 @@
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
+
+                            <div class="md:col-span-2">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Theme Colors</label>
+                                <div id="color-editor" class="border rounded-md p-4 bg-gray-50">
+                                    <div id="color-pairs" class="space-y-3">
+                                        <!-- Color pairs will be populated by JavaScript -->
+                                    </div>
+                                    <button type="button" id="add-color-pair" class="mt-3 bg-blue-500 text-white px-3 py-2 rounded text-sm hover:bg-blue-600 flex items-center">
+                                        <x-icon name="plus" class="w-4 h-4 mr-1" />Add Color
+                                    </button>
+                                </div>
+                                <input type="hidden" name="colors_json" id="colors_json_input" value='{{ old('colors_json', '{"text": "#000000", "muted": "#EEEEEE", "accent": "#237D9F", "primary": "#002037", "secondary": "#F8BE5D", "background": "#FFFFFF"}') }}'>
+                                @error('colors_json')
+                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                                <p class="mt-1 text-sm text-gray-500">Define color keys and their hex values for the theme.</p>
+                            </div>
                         </div>
 
                         <div class="mt-6">
@@ -71,3 +88,151 @@
         </div>
     </div>
 </x-admin-layout>
+
+<script>
+    class ColorEditor {
+        constructor() {
+            this.colorPairsContainer = document.getElementById('color-pairs');
+            this.addButton = document.getElementById('add-color-pair');
+            this.hiddenInput = document.getElementById('colors_json_input');
+            this.pairCount = 0;
+            
+            this.init();
+        }
+
+        init() {
+            // Load existing colors
+            this.loadColors();
+            
+            // Add event listener for add button
+            this.addButton.addEventListener('click', () => this.addColorPair());
+            
+            // Update JSON on form submit
+            document.querySelector('form').addEventListener('submit', (e) => {
+                this.updateHiddenInput();
+            });
+        }
+
+        loadColors() {
+            // Clear existing pairs first
+            this.colorPairsContainer.innerHTML = '';
+            this.pairCount = 0;
+            
+            try {
+                const colorsJson = this.hiddenInput.value;
+                console.log('Raw JSON:', colorsJson);
+                
+                if (!colorsJson || colorsJson.trim() === '') {
+                    this.addColorPair('text', '#000000');
+                    return;
+                }
+                
+                const colors = JSON.parse(colorsJson);
+                console.log('Parsed colors:', colors);
+                
+                // Check if colors is actually an object, not a string
+                if (typeof colors !== 'object' || colors === null) {
+                    console.error('Colors is not an object:', colors);
+                    this.addColorPair('text', '#000000');
+                    return;
+                }
+                
+                const colorEntries = Object.entries(colors);
+                if (colorEntries.length === 0) {
+                    this.addColorPair('text', '#000000');
+                } else {
+                    colorEntries.forEach(([key, value]) => {
+                        this.addColorPair(key, value);
+                    });
+                }
+            } catch (e) {
+                console.error('Error parsing colors JSON:', e);
+                console.error('Raw value was:', this.hiddenInput.value);
+                this.addColorPair('text', '#000000');
+            }
+        }
+
+        addColorPair(key = '', color = '#000000') {
+            const pairId = `color-pair-${this.pairCount++}`;
+            const pairHtml = `
+                <div class="flex items-center space-x-3 bg-white p-3 rounded border" data-pair-id="${pairId}">
+                    <input 
+                        type="text" 
+                        placeholder="Key (e.g., primary)" 
+                        value="${key}" 
+                        class="color-key flex-1 px-3 py-2 border rounded text-sm" 
+                        onchange="colorEditor.updateHiddenInput()"
+                    />
+                    <div class="flex items-center space-x-2">
+                        <input 
+                            type="color" 
+                            value="${color}" 
+                            class="color-picker w-10 h-8 border rounded cursor-pointer"
+                            onchange="colorEditor.updateColorValue(this)"
+                        />
+                        <input 
+                            type="text" 
+                            value="${color}" 
+                            class="color-value w-20 px-2 py-1 border rounded text-sm font-mono"
+                            pattern="#[0-9A-Fa-f]{6}"
+                            onchange="colorEditor.updateColorPicker(this)"
+                        />
+                    </div>
+                    <button 
+                        type="button" 
+                        class="text-red-600 hover:text-red-800 p-1"
+                        onclick="colorEditor.removeColorPair('${pairId}')"
+                    >
+                        <x-icon name="trash" class="w-4 h-4" />
+                    </button>
+                </div>
+            `;
+            
+            this.colorPairsContainer.insertAdjacentHTML('beforeend', pairHtml);
+            this.updateHiddenInput();
+        }
+
+        removeColorPair(pairId) {
+            const pair = document.querySelector(`[data-pair-id="${pairId}"]`);
+            if (pair) {
+                pair.remove();
+                this.updateHiddenInput();
+            }
+        }
+
+        updateColorValue(colorPicker) {
+            const textInput = colorPicker.nextElementSibling;
+            textInput.value = colorPicker.value;
+            this.updateHiddenInput();
+        }
+
+        updateColorPicker(textInput) {
+            const colorPicker = textInput.previousElementSibling;
+            if (/^#[0-9A-Fa-f]{6}$/.test(textInput.value)) {
+                colorPicker.value = textInput.value;
+            }
+            this.updateHiddenInput();
+        }
+
+        updateHiddenInput() {
+            const pairs = this.colorPairsContainer.querySelectorAll('[data-pair-id]');
+            const colors = {};
+            
+            pairs.forEach(pair => {
+                const key = pair.querySelector('.color-key').value.trim();
+                const value = pair.querySelector('.color-value').value.trim();
+                
+                if (key && value && /^#[0-9A-Fa-f]{6}$/.test(value)) {
+                    colors[key] = value;
+                }
+            });
+            
+            this.hiddenInput.value = JSON.stringify(colors);
+        }
+    }
+
+    // Initialize the color editor when the page loads
+    document.addEventListener('DOMContentLoaded', () => {
+        window.colorEditor = new ColorEditor();
+    });
+</script>

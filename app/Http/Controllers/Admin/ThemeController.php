@@ -65,6 +65,7 @@ class ThemeController extends Controller
 
     public function edit(Theme $theme): View
     {
+        //dd($theme->colors_json);
         return view('admin.themes.edit', compact('theme'));
     }
 
@@ -121,12 +122,23 @@ class ThemeController extends Controller
 
     public function destroy(Theme $theme): RedirectResponse
     {
+        // Force delete - remove all restrictions
+        
+        // If deleting the active theme, deactivate it first
         if ($theme->is_active) {
-            return back()->with('error', 'Cannot delete the active theme.');
+            // Find another theme to activate or just deactivate
+            $otherTheme = Theme::where('id', '!=', $theme->id)->first();
+            if ($otherTheme) {
+                Theme::where('is_active', true)->update(['is_active' => false]);
+                $otherTheme->update(['is_active' => true]);
+            } else {
+                $theme->update(['is_active' => false]);
+            }
         }
 
+        // Delete associated wishes if any exist
         if ($theme->wishes()->exists()) {
-            return back()->with('error', 'Cannot delete theme with associated wishes.');
+            $theme->wishes()->delete();
         }
 
         // Delete associated files
@@ -137,15 +149,17 @@ class ThemeController extends Controller
             Storage::disk('public')->delete($theme->favicon_path);
         }
 
-        auth('admin')->user()->logActivity('ADMIN_THEME_DELETED', [
+        auth('admin')->user()->logActivity('ADMIN_THEME_FORCE_DELETED', [
             'theme_id' => $theme->id,
             'theme_title' => $theme->theme_title,
-            'year' => $theme->year
+            'year' => $theme->year,
+            'was_active' => $theme->is_active,
+            'had_wishes' => $theme->wishes()->exists()
         ]);
 
         $theme->delete();
 
         return redirect()->route('admin.themes.index')
-            ->with('success', 'Theme deleted successfully.');
+            ->with('success', 'Theme deleted successfully (including all associated data).');
     }
 }

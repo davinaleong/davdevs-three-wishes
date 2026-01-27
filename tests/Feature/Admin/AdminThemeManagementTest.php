@@ -144,16 +144,26 @@ class AdminThemeManagementTest extends TestCase
         $response->assertSessionHas('success');
     }
 
-    public function test_admin_cannot_delete_active_theme()
+    public function test_admin_can_force_delete_active_theme()
     {
-        $theme = Theme::factory()->create(['is_active' => true]);
+        // Create two themes, one active
+        $activeTheme = Theme::factory()->create(['is_active' => true, 'year' => 2025]);
+        $inactiveTheme = Theme::factory()->create(['is_active' => false, 'year' => 2024]);
 
         $response = $this->actingAs($this->admin, 'admin')
-            ->delete("/admin/themes/{$theme->uuid}");
+            ->delete("/admin/themes/{$activeTheme->uuid}");
 
-        $this->assertDatabaseHas('themes', ['id' => $theme->id]);
-        $response->assertRedirect();
-        $response->assertSessionHas('error', 'Cannot delete the active theme.');
+        // Active theme should be deleted
+        $this->assertDatabaseMissing('themes', ['id' => $activeTheme->id]);
+        
+        // Another theme should become active
+        $this->assertDatabaseHas('themes', [
+            'id' => $inactiveTheme->id,
+            'is_active' => true
+        ]);
+
+        $response->assertRedirect(route('admin.themes.index'));
+        $response->assertSessionHas('success');
     }
 
     public function test_admin_can_delete_inactive_theme_without_wishes()
@@ -167,8 +177,35 @@ class AdminThemeManagementTest extends TestCase
 
         $this->assertDatabaseHas('admin_activity_logs', [
             'admin_id' => $this->admin->id,
-            'action' => 'ADMIN_THEME_DELETED',
+            'action' => 'ADMIN_THEME_FORCE_DELETED',
         ]);
+
+        $response->assertRedirect('/admin/themes');
+        $response->assertSessionHas('success');
+    }
+
+    public function test_admin_can_force_delete_theme_with_wishes()
+    {
+        $theme = Theme::factory()->create(['is_active' => false]);
+        
+        // Create some wishes for this theme
+        \App\Models\User::factory()->create();
+        \App\Models\Wish::factory(3)->create([
+            'theme_id' => $theme->id,
+            'user_id' => 1
+        ]);
+
+        // Verify wishes exist
+        $this->assertEquals(3, $theme->wishes()->count());
+
+        $response = $this->actingAs($this->admin, 'admin')
+            ->delete("/admin/themes/{$theme->uuid}");
+
+        // Theme should be deleted
+        $this->assertDatabaseMissing('themes', ['id' => $theme->id]);
+        
+        // Associated wishes should also be deleted
+        $this->assertDatabaseMissing('wishes', ['theme_id' => $theme->id]);
 
         $response->assertRedirect('/admin/themes');
         $response->assertSessionHas('success');

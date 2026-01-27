@@ -32,9 +32,6 @@
                                 <x-nav-link :href="route('admin.themes.index')" :active="request()->routeIs('admin.themes.*')">
                                     {{ __('Themes') }}
                                 </x-nav-link>
-                                <x-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')">
-                                    {{ __('Users') }}
-                                </x-nav-link>
                                 <x-nav-link :href="route('admin.emails.index')" :active="request()->routeIs('admin.emails.*')">
                                     {{ __('Emails') }}
                                 </x-nav-link>
@@ -95,9 +92,6 @@
                         </x-responsive-nav-link>
                         <x-responsive-nav-link :href="route('admin.themes.index')" :active="request()->routeIs('admin.themes.*')">
                             {{ __('Themes') }}
-                        </x-responsive-nav-link>
-                        <x-responsive-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')">
-                            {{ __('Users') }}
                         </x-responsive-nav-link>
                         <x-responsive-nav-link :href="route('admin.emails.index')" :active="request()->routeIs('admin.emails.*')">
                             {{ __('Emails') }}
