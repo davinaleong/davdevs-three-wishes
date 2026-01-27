@@ -25,7 +25,7 @@
             margin-bottom: 40px;
         }
         .header h1 {
-            color: #2b7fff;
+            color: {{ $yearTheme && $yearTheme->getColors('accent') ? $yearTheme->getColors('accent') : '#e74c3c' }};
             margin-bottom: 10px;
             font-size: 28px;
         }
@@ -67,7 +67,7 @@
             line-height: 1.5;
         }
         .cta-section {
-            background: linear-gradient(135deg, #2b7fff, #1447e6);
+            background: linear-gradient(135deg, {{ $yearTheme && $yearTheme->getColors('accent') ? $yearTheme->getColors('accent') : '#3498db' }}, {{ $yearTheme && $yearTheme->getColors('primary') ? $yearTheme->getColors('primary') : '#2980b9' }});
             color: white;
             padding: 30px;
             border-radius: 8px;
@@ -99,7 +99,7 @@
             border-top: 1px solid #ecf0f1;
         }
         .year-highlight {
-            color: #e74c3c;
+            color: {{ $yearTheme && $yearTheme->getColors('secondary') ? $yearTheme->getColors('secondary') : '#e74c3c' }};
             font-weight: bold;
         }
         .reflection-section {
@@ -120,7 +120,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>✨ Your <span class="year-highlight">{{ $year }}</span> Dav/Devs Three Wishes ✨</h1>
+            <h1 class="year-heading">✨ Your <span class="year-highlight">{{ $year }}</span> Dav/Devs Three Wishes ✨</h1>
             <p>"For I know the plans I have for you," declares the Lord, "plans to prosper you and not to harm you, to give you hope and a future." - Jeremiah 29:11</p>
             @if($yearTheme)
                 <p><strong>{{ $year }} Theme:</strong> {{ $yearTheme->theme_title }}</p>

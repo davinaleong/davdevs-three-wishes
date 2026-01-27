@@ -25,7 +25,7 @@
             margin-bottom: 40px;
         }
         .header h1 {
-            color: #2b7fff;
+            color: {{ $yearTheme->getColors('accent') ?? '#e74c3c' }};
             margin-bottom: 10px;
             font-size: 28px;
         }
@@ -66,7 +66,7 @@
             line-height: 1.5;
         }
         .cta-section {
-            background: linear-gradient(135deg, #2b7fff, #1447e6);
+            background: linear-gradient(135deg, {{ $yearTheme && $yearTheme->getColors('accent') ? $yearTheme->getColors('accent') : '#3498db' }}, {{ $yearTheme && $yearTheme->getColors('primary') ? $yearTheme->getColors('primary') : '#2980b9' }});
             color: white;
             padding: 30px;
             border-radius: 8px;
@@ -98,7 +98,7 @@
             border-top: 1px solid #ecf0f1;
         }
         .year-highlight {
-            color: {{ $yearTheme && $yearTheme->getColors('accent') ? $yearTheme->getColors('accent') : '#e74c3c' }};
+            color: {{ $yearTheme && $yearTheme->getColors('secondary') ? $yearTheme->getColors('secondary') : '#e74c3c' }};
             font-weight: bold;
         }
         .email-info-section {

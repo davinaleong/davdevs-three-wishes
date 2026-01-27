@@ -60,3 +60,9 @@ require __DIR__.'/admin.php';
 if (app()->environment(['local', 'testing'])) {
     require __DIR__.'/dev-email.php';
 }
+
+// Email preview routes (available in all environments for testing)
+Route::prefix('email-preview')->name('email-preview.')->group(function () {
+    Route::get('/', [\App\Http\Controllers\EmailPreviewController::class, 'index'])->name('index');
+    Route::get('/{template}', [\App\Http\Controllers\EmailPreviewController::class, 'preview'])->name('show');
+});

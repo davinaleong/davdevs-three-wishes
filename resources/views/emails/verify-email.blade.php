@@ -25,7 +25,7 @@
             margin-bottom: 40px;
         }
         .header h1 {
-            color: #2b7fff;
+            color: {{ $yearTheme->getColors('accent') ?? '#e74c3c' }};
             margin-bottom: 10px;
             font-size: 28px;
         }
@@ -91,7 +91,7 @@
             border-top: 1px solid #ecf0f1;
         }
         .year-highlight {
-            color: {{ $yearTheme && $yearTheme->getColors('accent') ? $yearTheme->getColors('accent') : '#e74c3c' }};
+            color: {{ $yearTheme->getColors('secondary') ?? '#e74c3c' }};
             font-weight: bold;
         }
         .manual-link {
@@ -106,7 +106,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>✨ Welcome to <span class="year-highlight">Dav/Devs Three Wishes</span> ✨</h1>
+            <h1>✨ Please Verify Your Email for <span class="year-highlight">Dav/Devs Three Wishes</span> ✨</h1>
             <p>"And we know that in all things God works for the good of those who love him, who have been called according to his purpose." - Romans 8:28</p>
             @if($yearTheme)
                 <p><strong>{{ $year }} Theme:</strong> {{ $yearTheme->theme_title }}</p>
