@@ -22,6 +22,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // Register named middleware
         $middleware->alias([
             'two-factor' => \App\Http\Middleware\TwoFactorMiddleware::class,
+            'admin' => \App\Http\Middleware\AdminMiddleware::class,
         ]);
     })
     ->withSchedule(function (Schedule $schedule): void {

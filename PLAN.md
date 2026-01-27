@@ -28,7 +28,7 @@
 
 ### Phase 3 — Dev-only email preview + Admin panel (Low priority)
 
-* Dev-only email preview routes/screens
+* Dev-only email preview routes/screen
 * Admin auth (separate table/guard)
 * Admin dashboard + activity logs + theme CRUD + manual email triggers
 

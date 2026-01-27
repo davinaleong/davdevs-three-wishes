@@ -37,8 +37,28 @@
                             Send a verification email to test the design and functionality.
                         </p>
                         <a href="{{ route('dev.emails.verification') }}" 
-                            class="inline-flex items-center px-4 py-2 bg-blue-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-600 transition">
+                            class="inline-flex items-center px-4 py-2 bg-blue-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-600 transition mb-2">
                             Send Verification Email
+                        </a>
+                        <a href="{{ route('dev.emails.preview', ['type' => 'verification']) }}" 
+                            class="inline-flex items-center px-3 py-1 bg-gray-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-600 transition">
+                            Preview
+                        </a>
+                    </div>
+
+                    <!-- Welcome Email -->
+                    <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+                        <h4 class="font-medium mb-2">Welcome Email</h4>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                            Send a welcome email to test post-verification messaging.
+                        </p>
+                        <a href="{{ route('dev.emails.welcome') }}" 
+                            class="inline-flex items-center px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-600 transition mb-2">
+                            Send Welcome Email
+                        </a>
+                        <a href="{{ route('dev.emails.preview', ['type' => 'welcome']) }}" 
+                            class="inline-flex items-center px-3 py-1 bg-gray-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-600 transition">
+                            Preview
                         </a>
                     </div>
 
@@ -61,8 +81,12 @@
                             Send a year-end wishes reminder email (Dec 31 email).
                         </p>
                         <a href="{{ route('dev.emails.year-end-wishes') }}" 
-                            class="inline-flex items-center px-4 py-2 bg-blue-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-600 transition">
+                            class="inline-flex items-center px-4 py-2 bg-purple-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-purple-600 transition mb-2">
                             Send Wishes Email
+                        </a>
+                        <a href="{{ route('dev.emails.preview', ['type' => 'year-end']) }}" 
+                            class="inline-flex items-center px-3 py-1 bg-gray-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-600 transition">
+                            Preview
                         </a>
                     </div>
                 </div>

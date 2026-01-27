@@ -12,7 +12,7 @@ Route::get('/', function () {
     $themeCssVariables = $themeService->getCssVariables($activeTheme);
     
     return view('welcome', compact('activeTheme', 'themeCssVariables'));
-});
+})->name('home');
 
 Route::get('/dashboard', function () {
     return redirect()->route('wishes.index');
@@ -53,7 +53,10 @@ Route::get('/privacy', [LegalController::class, 'privacy'])->name('legal.privacy
 
 require __DIR__.'/auth.php';
 
+// Admin routes
+require __DIR__.'/admin.php';
+
 // Include development email testing routes
-if (app()->environment('local')) {
+if (app()->environment(['local', 'testing'])) {
     require __DIR__.'/dev-email.php';
 }

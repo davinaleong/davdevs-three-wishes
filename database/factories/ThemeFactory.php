@@ -16,7 +16,8 @@ class ThemeFactory extends Factory
      */
     public function definition(): array
     {
-        $year = fake()->numberBetween(2020, 2030);
+        // Use a wider range and more unique year generation
+        $year = fake()->unique()->numberBetween(2000, 2050);
         
         return [
             'year' => $year,
@@ -48,6 +49,16 @@ class ThemeFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'is_active' => true,
+        ]);
+    }
+
+    /**
+     * Indicate that the theme is inactive.
+     */
+    public function inactive(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'is_active' => false,
         ]);
     }
 
