@@ -13,21 +13,48 @@
         @csrf
         @method('put')
 
-        <div>
+        <div x-data="passwordToggle()">
             <x-input-label for="update_password_current_password" :value="__('Current Password')" />
-            <x-text-input id="update_password_current_password" name="current_password" type="password" class="mt-1 block w-full" autocomplete="current-password" />
+            
+            <div class="relative">
+                <x-text-input id="update_password_current_password" name="current_password" ::type="type" class="mt-1 block w-full pr-10" autocomplete="current-password" />
+                
+                <button type="button" @click="toggle(); renderIcon()" :title="title"
+                        class="password-toggle-btn absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5 hover:opacity-70">
+                    <span class="lucide-icon w-5 h-5"></span>
+                </button>
+            </div>
+            
             <x-input-error :messages="$errors->updatePassword->get('current_password')" class="mt-2" />
         </div>
 
-        <div>
+        <div x-data="passwordToggle()">
             <x-input-label for="update_password_password" :value="__('New Password')" />
-            <x-text-input id="update_password_password" name="password" type="password" class="mt-1 block w-full" autocomplete="new-password" />
+            
+            <div class="relative">
+                <x-text-input id="update_password_password" name="password" ::type="type" class="mt-1 block w-full pr-10" autocomplete="new-password" />
+                
+                <button type="button" @click="toggle(); renderIcon()" :title="title"
+                        class="password-toggle-btn absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5 hover:opacity-70">
+                    <span class="lucide-icon w-5 h-5"></span>
+                </button>
+            </div>
+            
             <x-input-error :messages="$errors->updatePassword->get('password')" class="mt-2" />
         </div>
 
-        <div>
+        <div x-data="passwordToggle()">
             <x-input-label for="update_password_password_confirmation" :value="__('Confirm Password')" />
-            <x-text-input id="update_password_password_confirmation" name="password_confirmation" type="password" class="mt-1 block w-full" autocomplete="new-password" />
+            
+            <div class="relative">
+                <x-text-input id="update_password_password_confirmation" name="password_confirmation" ::type="type" class="mt-1 block w-full pr-10" autocomplete="new-password" />
+                
+                <button type="button" @click="toggle(); renderIcon()" :title="title"
+                        class="password-toggle-btn absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5 hover:opacity-70">
+                    <span class="lucide-icon w-5 h-5"></span>
+                </button>
+            </div>
+            
             <x-input-error :messages="$errors->updatePassword->get('password_confirmation')" class="mt-2" />
         </div>
 
