@@ -2,6 +2,11 @@
 
 echo "Running post-deploy script..."
 
+# Clear any existing caches first
+php artisan config:clear
+php artisan route:clear
+php artisan view:clear
+
 # Run migrations
 php artisan migrate --force
 
@@ -12,9 +17,5 @@ php artisan db:seed --class=ThemeSeeder --force
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
-
-# Build assets
-npm ci --only=production
-npm run build
 
 echo "Post-deploy script completed."

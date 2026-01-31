@@ -13,6 +13,10 @@ heroku config:set APP_URL=https://davdevs-three-wishes.herokuapp.com --app davde
 
 # Database will be auto-configured by Heroku PostgreSQL addon
 
+# Logging configuration for production
+heroku config:set LOG_CHANNEL=errorlog --app davdevs-three-wishes
+heroku config:set LOG_LEVEL=error --app davdevs-three-wishes
+
 # Mail configuration (you'll need to update these with your mail service)
 heroku config:set MAIL_MAILER=smtp --app davdevs-three-wishes
 heroku config:set MAIL_HOST=smtp.mailtrap.io --app davdevs-three-wishes
@@ -23,9 +27,16 @@ heroku config:set MAIL_ENCRYPTION=tls --app davdevs-three-wishes
 heroku config:set MAIL_FROM_ADDRESS=noreply@davdevs-three-wishes.herokuapp.com --app davdevs-three-wishes
 heroku config:set MAIL_FROM_NAME="Three Wishes" --app davdevs-three-wishes
 
-# Session and cache
+# Session and cache (optimized for production)
 heroku config:set SESSION_DRIVER=database --app davdevs-three-wishes
+heroku config:set SESSION_LIFETIME=120 --app davdevs-three-wishes
 heroku config:set CACHE_STORE=database --app davdevs-three-wishes
+
+# Queue configuration
+heroku config:set QUEUE_CONNECTION=database --app davdevs-three-wishes
 
 # Optional: Timezone
 heroku config:set APP_TIMEZONE="Asia/Singapore" --app davdevs-three-wishes
+
+# PHP Configuration
+heroku config:set PHP_VERSION=8.3 --app davdevs-three-wishes

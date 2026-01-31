@@ -1,0 +1,78 @@
+{
+  "name": "Dav/Devs Three Wishes",
+  "description": "Privacy-first Christian spiritual goal-setting platform",
+  "keywords": [
+    "laravel",
+    "php",
+    "spiritual",
+    "goals",
+    "privacy"
+  ],
+  "website": "https://davdevs-three-wishes.herokuapp.com",
+  "repository": "https://github.com/your-username/davdevs-three-wishes",
+  "stack": "heroku-24",
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    },
+    {
+      "url": "heroku/php"
+    }
+  ],
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "basic"
+    },
+    "worker": {
+      "quantity": 1,
+      "size": "basic"
+    }
+  },
+  "addons": [
+    {
+      "plan": "heroku-postgresql:essential-0"
+    }
+  ],
+  "env": {
+    "APP_NAME": {
+      "description": "The name of the application",
+      "value": "Three Wishes"
+    },
+    "APP_ENV": {
+      "description": "The application environment",
+      "value": "production"
+    },
+    "APP_DEBUG": {
+      "description": "Enable debug mode",
+      "value": "false"
+    },
+    "APP_KEY": {
+      "description": "Laravel application key (generate with: php artisan key:generate --show)",
+      "generator": "secret"
+    },
+    "LOG_CHANNEL": {
+      "description": "Log channel for production",
+      "value": "errorlog"
+    },
+    "SESSION_DRIVER": {
+      "description": "Session driver for production",
+      "value": "database"
+    },
+    "CACHE_STORE": {
+      "description": "Cache store for production", 
+      "value": "database"
+    },
+    "MAIL_MAILER": {
+      "description": "Mail service provider",
+      "value": "smtp"
+    },
+    "MAIL_FROM_NAME": {
+      "description": "Default from name for emails",
+      "value": "Three Wishes"
+    }
+  },
+  "scripts": {
+    "postdeploy": "php artisan migrate --force && php artisan db:seed --class=ThemeSeeder --force"
+  }
+}
