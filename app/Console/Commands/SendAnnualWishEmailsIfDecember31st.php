@@ -26,25 +26,7 @@ class SendAnnualWishEmailsIfDecember31st extends Command
      */
     public function handle(): int
     {
-        $today = now();
-        
-        // Check if today is December 31st
-        if ($today->month !== 12 || $today->day !== 31) {
-            $this->info("Today is {$today->format('F j, Y')} - not December 31st. Skipping annual wish emails.");
-            return self::SUCCESS;
-        }
-        
-        $this->info("It's December 31st, {$today->year}! Sending annual wish emails...");
-        
-        // Call the main command
-        $exitCode = Artisan::call('wishes:send-annual-emails');
-        
-        if ($exitCode === 0) {
-            $this->info('Annual wish emails sent successfully!');
-        } else {
-            $this->error('There was an error sending annual wish emails.');
-        }
-        
-        return $exitCode;
+        $this->error('Annual wish email functionality has been disabled for privacy compliance.');
+        return self::FAILURE;
     }
 }

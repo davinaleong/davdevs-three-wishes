@@ -21,35 +21,39 @@ class AdminDashboardTest extends TestCase
         $this->admin = Admin::factory()->create();
     }
 
-    public function test_admin_dashboard_displays_user_statistics()
+    public function test_admin_dashboard_displays_wish_statistics_only()
     {
         // Create test data
-        User::factory(5)->create();
-        User::factory(3)->verified()->create();
-        User::factory(2)->create(['two_factor_enabled_at' => now()]);
+        $user = User::factory()->verified()->create();
+        $theme = Theme::factory()->create();
+        Wish::factory(3)->create(['user_id' => $user->id, 'theme_id' => $theme->id]);
+        Theme::factory()->create(['is_active' => true]);
 
         $response = $this->actingAs($this->admin, 'admin')
             ->get('/admin/dashboard');
 
         $response->assertStatus(200);
         $response->assertViewHas('stats');
-        $response->assertSee('8'); // total users
-        $response->assertSee('3'); // verified users
-        $response->assertSee('2'); // 2FA users
+        $response->assertSee('3'); // total wishes
+        $response->assertSee('1'); // active themes
+        // User statistics should not be visible
+        $response->assertDontSee('Total Users');
+        $response->assertDontSee('Verified Users');
     }
 
-    public function test_admin_dashboard_displays_wish_statistics()
+    public function test_admin_dashboard_displays_theme_management_tools()
     {
-        $user = User::factory()->verified()->create();
-        $theme = Theme::factory()->create();
-        Wish::factory(3)->create(['user_id' => $user->id, 'theme_id' => $theme->id]);
+        $theme = Theme::factory()->create(['is_active' => true]);
 
         $response = $this->actingAs($this->admin, 'admin')
             ->get('/admin/dashboard');
 
         $response->assertStatus(200);
-        $response->assertViewHas('averageWishesPerUser');
-        $response->assertSee('3'); // total wishes
+        $response->assertViewHas('activeTheme');
+        // Should not have user-specific averages
+        $response->assertViewMissing('averageWishesPerUser');
+        // Should have theme management links
+        $response->assertSee('Create New Theme');
     }
 
     public function test_admin_dashboard_displays_active_theme()
@@ -67,17 +71,20 @@ class AdminDashboardTest extends TestCase
         $response->assertSee('Test Theme 2026');
     }
 
-    public function test_admin_dashboard_shows_recent_activity()
+    public function test_admin_dashboard_shows_admin_activity_only()
     {
-        $user = User::factory()->create(['name' => 'Test User']);
-        $user->logActivity('WISH_CREATED', ['test' => 'data']);
+        // Log some admin activity
+        $this->admin->logActivity('ADMIN_THEME_CREATED', ['theme_id' => 1]);
 
         $response = $this->actingAs($this->admin, 'admin')
             ->get('/admin/dashboard');
 
         $response->assertStatus(200);
-        $response->assertViewHas('recentUserActivity');
-        $response->assertSee('Test User');
+        $response->assertViewHas('recentAdminActivity');
+        // Should not have user activity
+        $response->assertViewMissing('recentUserActivity');
+        // Should not show user names
+        $response->assertDontSee('Test User');
     }
 
     public function test_admin_dashboard_logs_access()
@@ -104,12 +111,14 @@ class AdminDashboardTest extends TestCase
         $response->assertSee(route('admin.emails.index'));
     }
 
-    public function test_dashboard_shows_no_recent_activity_message_when_empty()
+    public function test_dashboard_shows_admin_activity_when_available()
     {
         $response = $this->actingAs($this->admin, 'admin')
             ->get('/admin/dashboard');
 
         $response->assertStatus(200);
-        $response->assertSee('No recent activity');
+        // Should show admin activity (dashboard viewed) instead of empty message
+        $response->assertSee('Admin dashboard viewed');
+        $response->assertDontSee('No recent activity');
     }
 }

@@ -9,10 +9,6 @@
                             <button onclick="window.print()" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-md text-sm font-medium">
                                 Print Logs
                             </button>
-                            <a href="{{ route('admin.activity-logs.export') }}{{ request()->getQueryString() ? '?' . request()->getQueryString() : '' }}" 
-                                class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm font-medium">
-                                Export CSV
-                            </a>
                         </div>
                     </div>
 

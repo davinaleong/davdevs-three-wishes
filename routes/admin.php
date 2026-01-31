@@ -25,16 +25,9 @@ Route::middleware(['admin'])->prefix('admin')->name('admin.')->group(function ()
     Route::resource('themes', ThemeController::class);
     Route::post('themes/{theme}/activate', [ThemeController::class, 'activate'])->name('themes.activate');
     
-    // User email management only
-    Route::post('users/{user}/resend-verification', [UserController::class, 'resendVerification'])->name('users.resend-verification');
-    Route::post('users/{user}/send-year-end', [UserController::class, 'sendYearEndWishes'])->name('users.send-year-end');
-    
-    // Email management
+    // Email management (user functionality removed)
     Route::get('emails', [EmailController::class, 'index'])->name('emails.index');
-    Route::post('emails/broadcast', [EmailController::class, 'sendBroadcast'])->name('emails.broadcast');
-    Route::post('emails/year-end-batch', [EmailController::class, 'sendYearEndBatch'])->name('emails.year-end-batch');
     
-    // Activity logs
+    // Activity logs (export removed)
     Route::get('activity-logs', [ActivityLogController::class, 'index'])->name('activity-logs.index');
-    Route::get('activity-logs/export', [ActivityLogController::class, 'export'])->name('activity-logs.export');
 });
